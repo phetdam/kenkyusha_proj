@@ -11,7 +11,7 @@ Project folder for the BAC Research Team's study of boosting algorithm performan
 
 ## Data files
 
-All data files used in this project may be found in the `./data` directory. The raw .csv data files downloaded from OpenML can be found in `./data/csv_raw`, while the [minimally] cleaned .csv data files can be found in `./data/csv_clean`. Descriptions for the 8 different data sets we used are below.
+All data files used in this project may be found in the `./data` directory. The raw .csv data files downloaded from OpenML can be found in `./data/csv_raw`, while the [minimally] cleaned .csv data files can be found in `./data/csv_clean`. We used 8 different datasets for our study and their brief descriptions are below.
 
 * **iris**
 
