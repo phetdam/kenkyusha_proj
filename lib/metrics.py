@@ -7,8 +7,6 @@
 # initial creation. added functions to compute, given two classifier accuracies
 # calculated appropriately, relative loss of error and equalized loss of error.
 
-from numpy import nan
-
 __doc__ = """
 contains metrics for quantifying model performance characteristics.
 """
