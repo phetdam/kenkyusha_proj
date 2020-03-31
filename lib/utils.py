@@ -2,11 +2,18 @@
 #
 # Changelog:
 #
+# 03-31-2020
+#
+# updated docstring for Data_Set class and checked over all the functions.
+#
 # 03-30-2020
 #
 # moved to lib directory so that we can refer to module as part of a package.
 # added the convenience function DataFrame2Data_Set to make it easier to convert
 # from a DataFrame to a Data_Set, as DataFrames are common data structures.
+# added function to create copies of Data_Sets with a specified fraction of
+# label (only implemented type) noise to the training/test sets. also modified
+# Data_Set to have attributes indicating amount artificially introduced noise.
 #
 # 03-27-2020
 #
@@ -22,13 +29,19 @@
 #
 # initial creation. added __doc__ and _MODULE_NAME. no substantial code.
 
-from numpy import array, hstack, ndarray
+from copy import deepcopy
+from numpy import arange, array, array_equal, hstack, ndarray, setdiff1d, \
+    unique, union1d
+from numpy.random import choice, seed
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
+from sys import stderr
 from textwrap import fill
 
 __doc__ = """
 contains general utility functions/classes for loading/converting data, etc.
+
+dependencies: numpy, pandas, sklearn
 """
 
 _MODULE_NAME = "utils"
@@ -51,6 +64,24 @@ class Data_Set:
                      test_size = 0.3, random_state = 7)
     # from numpy arrays X, y, and a list of labels
     data2 = Data_Set(X, y, array(["lab1", "lab2", "lab3"]), random_state = 5)
+
+    attributes:
+
+    X_train               ndarray feature matrix for training set
+    y_train               ndarray response vector for training set
+    X_train               ndarray feature matrix for test set
+    y_train               ndarray response vector for test set
+    features              ndarray of str feature labels
+    response              str response label
+    name                  str name identifying the data set
+    n_samples             total number of data samples in the Data_Set
+    n_features            number of feature columns
+    test_size             fraction of n_samples that are test samples
+    random_state          int seed used to seed the PRNG when making train/test
+                          splits using sklearn's train_test_split; can be None
+    added_noise_fraction  fraction of data points in both training and test sets
+                          that have noise applied to them
+    added_noise_type      kind of noise applied; ex. label noise
     """
     def __init__(self, X_in, y_in, X_labs, y_lab, dname, test_size = 0.2,
                  random_state = None, _no_check = False):
@@ -118,6 +149,8 @@ class Data_Set:
         self.name = dname
         self.test_size = test_size
         self.random_state = random_state
+        self.added_noise_fraction = 0.0
+        self.added_noise_type = None
 
     # instance methods
     def to_DataFrames(self):
@@ -143,11 +176,14 @@ class Data_Set:
     # define repr and str format
     def __repr__(self):
         return fill("{0}(name = {1}, n_samples = {2}, n_features = {3}, "
-                    "response = {4}, test_size = {5}, random_state = {6}, "
-                    "features = {7})"
+                    "test_size = {4}, random_state = {5}, added_noise_fraction"
+                    " = {6}, added_noise_type = {7}, response = {8}, "
+                    "features = {9})"
                     .format(Data_Set.__name__, self.name, self.n_samples,
-                            self.n_features, self.response, self.test_size,
-                            self.random_state, list(self.features)), width = 80,
+                            self.n_features, self.test_size,
+                            self.random_state, self.added_noise_fraction,
+                            self.added_noise_type, self.response,
+                            list(self.features)), width = 80,
                     subsequent_indent = (len(Data_Set.__name__) + 1) * " ")
 
     def __str__(self): return self.__repr__()
@@ -183,8 +219,8 @@ def DataFrame2Data_Set(df, dname, response = None, test_size = 0.2,
        ((test_size <= 0) or (test_size >= 1)):
         raise TypeError("{0}: test_size: float between (0, 1) expected, {1} "
                         "received".format(_fn, type(test_size)))
-    if not isinstance(random_state, int):
-        raise TypeError("{0}: random_state: int expected, {1} received"
+    if (not isinstance(random_state, int)) and (not random_state is None):
+        raise TypeError("{0}: random_state: int or None expected, {1} received"
                         .format(_fn, type(test_size)))
     # if response is None or last column, easy to make X and y
     X, y = None, None
@@ -226,15 +262,73 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     fraction        optional float in (0, 1) indicating what fraction of the 
                     training and test sets should be affected, default 0.2
     kind            optional str, the kind of noise added to ds, default "label"
-    random_state    optional int to seed the PRNG, default None
+    random_state    optional int to seed the numpy PRNG, default None
 
     below is a description of the noise types supported by the "kind" kwarg.
 
     label    given an affected sample with label k out of m many labels,
              randomly select one of the m - 1 labels to assign to the sample.
     """
-    pass
-        
+    _fn = noisy_copy.__name__
+    # type checks
+    if not isinstance(ds, Data_Set):
+        raise TypeError("{0}: ds: Data_Set expected, {1} received"
+                        .format(_fn, type(ds)))
+    if (not isinstance(fraction, float)) or \
+       ((fraction <= 0) or (fraction >= 1)):
+        raise TypeError("{0}: fraction: float between (0, 1) expected, {1} "
+                        "received".format(_fn, type(fraction)))
+    if not isinstance(kind, str):
+        raise TypeError("{0}: kind: str expected, {1} received"
+                        .format(_fn, type(str)))
+    if (not isinstance(random_state, int)) and (not random_state is None):
+        raise TypeError("{0}: random_state: int or None expected, {1} received"
+                        .format(_fn, type(random_state)))
+    # create deep copy the original data set ds
+    ds_copy = deepcopy(ds)
+    # get number of training and test samples
+    n_tn, n_tt = ds.X_train.shape[0], ds.X_test.shape[0]
+    # create index arrays for training and test data sets
+    idx_tn, idx_tt = arange(0, n_tn), arange(0, n_tt)
+    # use random_state to seed numpy's PRNG for reproducibility
+    seed(seed = random_state)
+    # get training and test set indices to add noise to; if fractional, truncate
+    nidx_tn = choice(idx_tn, size = int(fraction * n_tn))
+    nidx_tt = choice(idx_tt, size = int(fraction * n_tt))
+    # do different things based on the noise type. only "label" supported.
+    if kind == "label":
+        # get unique response values in the training and test sets; union the
+        # two arrays if they are not equal
+        uniq_tn, uniq_tt, uniqs = unique(ds.y_train), unique(ds.y_test), None
+        if array_equal(uniq_tn, uniq_tt) == True: uniqs = uniq_tn
+        else: uniqs = union1d(uniq_tn, uniq_tt)
+        # if lengths of uniq_tn and uniq_tt equal the number of training and
+        # test samples respectively, warn that ds may be a regression data set
+        if (uniq_tn.shape[0] == ds.y_train.shape[0]) and \
+           (uniq_tt.shape[0] == ds.y_test.shape[0]):
+            print("{0}: warning: Data_Set {1} may be a regression data set"
+                  .format(_fn, ds.name), file = stderr)
+        # for each index i in nidx_tn, nidx_tt, uniformly sample from uniqs
+        # except for the value taken by y_train[i] or y_test[i], and then modify
+        # the label of y_train[i] or y_test[i] with the sampled label. use
+        # setdiff1d to get set difference of uniqs and label; we know values are
+        # unique so set assume_unique = True to speed up calculation
+        for i in nidx_tn:
+            ds_copy.y_train[i] = choice(setdiff1d(uniqs, [ds_copy.y_train[i]],
+                                                  assume_unique = True))
+        for i in nidx_tt:
+            ds_copy.y_test[i] = choice(setdiff1d(uniqs, [ds_copy.y_test[i]],
+                                                 assume_unique = True))
+        # done
+    # else raise ValueError
+    else:
+        raise ValueError("{0}: unknown kind {1}. see docstring for supported "
+                         "noise types".format(_fn, kind))
+    # change attributes to reflect fraction of affected samples + noise type
+    ds_copy.added_noise_fraction = fraction
+    ds_copy.added_noise_type = kind
+    # return
+    return ds_copy
 
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
