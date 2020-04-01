@@ -7,7 +7,8 @@
 #
 # completed model_from_spec and moved it to utils (wrong module). completed
 # compute_accuracies, which computes classifier accuracies on multiple data sets
-# with optional noisy copies to be fitted at various levels of noise.
+# with optional noisy copies to be fitted at various levels of noise. made note
+# in the docstring for compute_accuracies that accuracies are test accuracies.
 #
 # 03-31-2020
 #
@@ -109,10 +110,10 @@ def compute_accuracies(est, dsets, noise_kinds = None, noise_levels = None,
     """
     for an sklearn-style classifier instance with fit, predict, and score
     methods, an iterable of Data_Set objects, and an optional list of noise
-    kinds and noise levels, computes accuracies for each Data_Set as well as for
-    noisy copies of each Data_Set, which satisfy each combination of noise type
-    and noise level. if there are n_kinds noise types, n_levels noise levels,
-    and n_dsets Data_Sets, the method returns a DataFrame row-indexed by
+    kinds and noise levels, computes test accuracies for each Data_Set as well
+    as for noisy copies of each Data_Set, which satisfy each combination of
+    noise type and noise level. if there are n_kinds noise types, n_levels noise
+    levels, and n_dsets Data_Sets, the method returns a DataFrame row-indexed by
     Data_Set name, column-indexed by noise levels, and will have the final shape
     of (n_dsets, n_kinds * n_levels + 1).
 
