@@ -6,7 +6,7 @@
 #
 # added function model_from_spec for returning an sklearn-like model instance
 # given an appropriately formatted JSON-representable dict. modified noisy_copy
-# docstring to make note that multiple calls do not required multiple seeding.
+# docstring to note that it is not thread safe due to numpy.random.seed call.
 #
 # 03-31-2020
 #
@@ -261,9 +261,9 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     samples in the copy. returns a Data_Set that is a copy of the original, with
     the specified noise added to a specified fraction of the train/test samples.
 
-    currently, only "label" noise is supported. if you are calling noisy_copy
-    many times in succession, only set random_state once as the seed is used
-    directly with numpy.random.seed to control the numpy PRNG state.
+    currently, only "label" noise is supported.
+
+    not thread safe due to call to numpy.random.seed!
 
     parameters:
 
