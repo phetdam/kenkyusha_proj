@@ -34,7 +34,7 @@
 	    "booster": "gbtree",
 	    "reg_alpha": 0.1,
 	    "reg_lambda": 0.1,
-	    "random_state" 7
+	    "random_state": 7
 	}
     }
 ]
