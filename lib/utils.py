@@ -7,6 +7,8 @@
 # added function model_from_spec for returning an sklearn-like model instance
 # given an appropriately formatted JSON-representable dict. modified noisy_copy
 # docstring to note that it is not thread safe due to numpy.random.seed call.
+# added missing importlib import for module_from_spec and modified the
+# module_from_spec to call itself recursively to handle nested estimators.
 #
 # 03-31-2020
 #
@@ -37,6 +39,7 @@
 # initial creation. added __doc__ and _MODULE_NAME. no substantial code.
 
 from copy import deepcopy
+from importlib import import_module
 from numpy import arange, array, array_equal, hstack, ndarray, setdiff1d, \
     unique, union1d
 from numpy.random import choice, seed
@@ -339,7 +342,7 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     # return
     return ds_copy
 
-def model_from_spec(spec):
+def model_from_spec(spec, _depth = 1):
     """
     given an appropriate JSON-formatted dict specifying an sklearn-like model,
     return a model instance with the specified hyperparameters.
@@ -352,9 +355,17 @@ def model_from_spec(spec):
 
             {"module": str, "model": str, "params": {"param1": param1, ...}}
 
-            params may also be an empty dict.
+            params may also be an empty dict. note that if any of the values in
+            the params dict are also dicts, then they will be treated as params
+            dicts for a nested model (like for meta-estimators) and the function
+            will call itself recursively to recover that inner model.
+    _depth  do not use: internal parameter indicating recursion depth.
     """
     _fn = model_from_spec.__name__
+    # if _depth exceeds 2, break infinite loop
+    if _depth > 2:
+        raise RuntimeError("{0}: exceeded maximum recursion depth (2)"
+                           .format(_fn))
     if not isinstance(spec, dict):
         raise TypeError("{0}: spec must be properly formatted JSON-style dict"
                         .format(_fn))
@@ -376,6 +387,11 @@ def model_from_spec(spec):
     if not hasattr(_mdl, n_model):
         raise AttributeError("{0}: module {1} does not have attribute {2}"
                              .format(_fn, n_module, n_model))
+    # for each key, value pair in params, check if value is dict. if so, call
+    # model_from_spec recursively (assume dict is valid format)
+    for k, v in params.items():
+        if isinstance(v, dict):
+            params[k] = model_from_spec(v, _depth = _depth + 1)
     # instantiate model with hyperparamaters; lazy error catching
     est = getattr(_mdl, n_model)(**params)
     # delete the module reference after and return est
