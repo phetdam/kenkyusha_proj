@@ -2,6 +2,12 @@
 #
 # Changelog:
 #
+# 04-01-2020
+#
+# added function model_from_spec for returning an sklearn-like model instance
+# given an appropriately formatted JSON-representable dict. modified noisy_copy
+# docstring to make note that multiple calls do not required multiple seeding.
+#
 # 03-31-2020
 #
 # updated docstring for Data_Set class and checked over all the functions. added
@@ -255,7 +261,9 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     samples in the copy. returns a Data_Set that is a copy of the original, with
     the specified noise added to a specified fraction of the train/test samples.
 
-    currently, only "label" noise is supported.
+    currently, only "label" noise is supported. if you are calling noisy_copy
+    many times in succession, only set random_state once as the seed is used
+    directly with numpy.random.seed to control the numpy PRNG state.
 
     parameters:
 
@@ -330,6 +338,49 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     ds_copy.added_noise_type = kind
     # return
     return ds_copy
+
+def model_from_spec(spec):
+    """
+    given an appropriate JSON-formatted dict specifying an sklearn-like model,
+    return a model instance with the specified hyperparameters.
+
+    only works if the module the class is defined in is on the search path.
+
+    parameters:
+
+    spec    dict. format:
+
+            {"module": str, "model": str, "params": {"param1": param1, ...}}
+
+            params may also be an empty dict.
+    """
+    _fn = model_from_spec.__name__
+    if not isinstance(spec, dict):
+        raise TypeError("{0}: spec must be properly formatted JSON-style dict"
+                        .format(_fn))
+    # check if all required keys are present
+    if "module" not in spec:
+        raise KeyError("{0}: spec missing required key \"module\"".format(_fn))
+    if "model" not in spec:
+        raise KeyError("{0}: spec missing required key \"model\"".format(_fn))
+    if "params" not in spec:
+        raise KeyError("{0}: spec missing required key \"params\"".format(_fn))
+    # get module name, model name, and params dict
+    n_module, n_model, params = spec["module"], spec["model"], spec["params"]
+    # try to import the relevant module first
+    try: _mdl = import_module(n_module)
+    except ImportError as ie:
+        raise ImportError("{0}: could not import module {1}"
+                          .format(_fn, n_module)) from ie
+    # check if module has the desired attribute; if not raise AttributeError
+    if not hasattr(_mdl, n_model):
+        raise AttributeError("{0}: module {1} does not have attribute {2}"
+                             .format(_fn, n_module, n_model))
+    # instantiate model with hyperparamaters; lazy error catching
+    est = getattr(_mdl, n_model)(**params)
+    # delete the module reference after and return est
+    del _mdl
+    return est
 
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
