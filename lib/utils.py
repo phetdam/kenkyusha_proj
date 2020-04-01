@@ -4,7 +4,8 @@
 #
 # 03-31-2020
 #
-# updated docstring for Data_Set class and checked over all the functions.
+# updated docstring for Data_Set class and checked over all the functions. added
+# explicit check for random_state being None or not in noisy_copy.
 #
 # 03-30-2020
 #
@@ -290,8 +291,8 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     n_tn, n_tt = ds.X_train.shape[0], ds.X_test.shape[0]
     # create index arrays for training and test data sets
     idx_tn, idx_tt = arange(0, n_tn), arange(0, n_tt)
-    # use random_state to seed numpy's PRNG for reproducibility
-    seed(seed = random_state)
+    # use random_state to seed numpy's PRNG for reproducibility if not None
+    if not random_state is None: seed(seed = random_state)
     # get training and test set indices to add noise to; if fractional, truncate
     nidx_tn = choice(idx_tn, size = int(fraction * n_tn))
     nidx_tt = choice(idx_tt, size = int(fraction * n_tt))
