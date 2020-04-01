@@ -1,0 +1,54 @@
+{
+    "data_dir": "./data/csv_clean",
+    "result_dir": "./results",
+    "save_accs": 0,
+    "save_elas": 0,
+    "save_ela_fig": 0,
+    "save_rla_fig": 0,
+    "models": [
+	{
+	    "name": "adaboost6",
+	    "module": "sklearn.ensemble",
+	    "model": "AdaBoostClassifier",
+	    "params": {
+		"base_estimator": {
+		    "module": "sklearn.tree",
+		    "model": "DecisionTreeClassifier",
+		    "params": {
+			"criterion": "entropy",
+			"max_depth": 6,
+			"random_state": 7
+		    }
+		},
+		"n_estimators": 100,
+		"random_state": 7
+	    }
+	},
+	{
+	    "name": "gboost6",
+	    "module": "sklearn.ensemble",
+	    "model": "GradientBoostingClassifier",
+	    "params": {
+		"n_estimators": 100,
+		"max_depth": 6,
+		"learning_rate": 0.1,
+		"random_state": 7
+	    }
+	},
+	{
+	    "name": "xgboost6",
+	    "module": "xgboost",
+	    "model": "XGBClassifier",
+	    "params": {
+		"n_estimators": 100,
+		"max_depth": 6,
+		"learning_rate": 0.1,
+		"booster": "gbtree",
+		"reg_alpha": 0.1,
+		"reg_lambda": 0.1,
+		"n_jobs": 2,
+		"random_state": 7
+	    }
+	}
+    ]
+}
