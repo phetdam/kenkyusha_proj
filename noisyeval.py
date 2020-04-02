@@ -183,10 +183,10 @@ if __name__ == "__main__":
               .format(_PROGNAME, _DISP_RLAS, disp_rlas), file = stderr)
     # if one of these options is 1, then we run the following loop
     if (disp_accs == 1) or (disp_elas == 1) or (disp_rlas == 1):
-        # do for each Model_Result; also print model type and name
+        # do for each Model_Result; also print model class name and name
         for mdl_res in mdl_results:
             print("results for {0} {1}:\n"
-                  .format(mdl_res.name, type(mdl_res._est)))
+                  .format(mdl_res.name, mdl_res._est.__class__.__name__))
             if disp_accs == 1:
                 print(mdl_res.results["accs"])
             if disp_elas == 1:
