@@ -6,7 +6,9 @@
 # 04-02-2020
 #
 # modified changelog to reflect starting on ELA/RLA matrix computing functions,
-# which were completed today. moved to kyulib.
+# which were completed today. moved to kyulib. forgot to add mean() call to
+# accuracies2ela function; since corrected. changed incorrect column prefixes
+# in accuracies2ela; were prefixed with acc_ instead of ela_.
 #
 # 04-01-2020
 #
@@ -297,7 +299,8 @@ def accuracies2ela(acc_df, avg_ela = False):
 
     a properly formatted acc_df will have a string row index of Data_Set names
     and a string column index, where the first column is usually "acc_0" and 
-    following columns have the format "acc_[noise kind]_[noise level]".
+    following columns have the format "acc_[noise kind]_[noise level]". the
+    returned DataFrame will have columns "ela_[noise kind]_[noise level]".
 
     parameters:
 
@@ -326,14 +329,23 @@ def accuracies2ela(acc_df, avg_ela = False):
     if acc_df.columns.shape[0] <= 1:
         raise ValueError("{0}: acc_df must have at least two columns"
                          .format(_fn))
+    # take all but first column of acc_df and change prefix from "acc" to "ela"
+    # if computing full ela matrix, else change to ""
+    ela_cols = list(acc_df.columns[1:])
+    if avg_ela == True:
+        for i in range(len(ela_cols)):
+            ela_cols[i] = ela_cols[i].replace("acc_", "")
+    else:
+        for i in range(len(ela_cols)):
+            ela_cols[i] = ela_cols[i].replace("acc", "ela")
     # create output matrix of ELAs with no data
-    ela_df = DataFrame(data = None, index = acc_df.index,
-                       columns = acc_df.columns[1:])
+    ela_df = DataFrame(data = None, index = acc_df.index, columns = ela_cols)
     # get label of first column of acc_df
     acc_0 = acc_df.columns[0]
     # for each noise data set and noise level, compute ELA metric
     for ds in ela_df.index:
-        for nl in ela_df.columns:
+        # nl is the ela_df label, ol is the acc_df label
+        for nl, ol in zip(ela_df.columns, acc_df.columns[1:]):
             # get a float version of the noise level
             fnl = nl.split("_")[-1]
             try: fnl = float(fnl)
@@ -342,7 +354,7 @@ def accuracies2ela(acc_df, avg_ela = False):
                                  "function docstring for instructions"
                                  .format(_fn)) from ve
             # compute ELA using acc_df values and write to ela_df
-            ela_df.loc[ds, nl] = ela(acc_df.loc[ds, acc_0], acc_df.loc[ds, nl])
+            ela_df.loc[ds, nl] = ela(acc_df.loc[ds, acc_0], acc_df.loc[ds, ol])
     # if avg_ela is True
     if avg_ela == True:
         # create DataFrame for average ELAs
@@ -350,11 +362,10 @@ def accuracies2ela(acc_df, avg_ela = False):
                              columns = ela_df.columns)
         # average across noise levels and then return avg_elas
         for nl in avg_elas.columns:
-            avg_elas.loc["avg_ela", nl] = ela_df.loc[:, nl]
+            avg_elas.loc["avg_ela", nl] = mean(ela_df.loc[:, nl])
         return avg_elas
     # else return ela_df
     return ela_df
-    
     
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
