@@ -190,8 +190,10 @@ if __name__ == "__main__":
             if disp_accs == 1:
                 print(mdl_res.results["accs"])
             if disp_elas == 1:
+                pass
                 #print(mdl_res.results["elas"])
             if disp_rlas == 1:
+                pass
                 #print(mdl_res.results["rlas"])
     # options for making comparison plots of average ELAs
     save_ela_fig = cfg_data[_SAVE_ELA_FIG]
