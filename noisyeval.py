@@ -188,13 +188,13 @@ if __name__ == "__main__":
             print("results for {0} {1}:\n"
                   .format(mdl_res._est.__class__.__name__, mdl_res.name))
             if disp_accs == 1:
-                print(mdl_res.results["accs"])
+                print("{0}\n".format(mdl_res.results["accs"]))
             if disp_elas == 1:
                 pass
-                #print(mdl_res.results["elas"])
+                #print("{0}\n".format(mdl_res.results["elas"]))
             if disp_rlas == 1:
                 pass
-                #print(mdl_res.results["rlas"])
+                #print("{0}\n".format(mdl_res.results["rlas"]))
     # options for making comparison plots of average ELAs
     save_ela_fig = cfg_data[_SAVE_ELA_FIG]
     save_rla_fig = cfg_data[_SAVE_RLA_FIG]
