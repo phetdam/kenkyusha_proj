@@ -186,7 +186,7 @@ if __name__ == "__main__":
         # do for each Model_Result; also print model class name and name
         for mdl_res in mdl_results:
             print("results for {0} {1}:\n"
-                  .format(mdl_res.name, mdl_res._est.__class__.__name__))
+                  .format(mdl_res._est.__class__.__name__, mdl_res.name))
             if disp_accs == 1:
                 print(mdl_res.results["accs"])
             if disp_elas == 1:
