@@ -6,10 +6,10 @@
     "noise_kinds": ["label"],
     "noise_levels": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
     "disp_accs": 1,
-    "disp_elas": 1,
-    "disp_rlas": 1,
+    "disp_elas": 0,
+    "disp_rlas": 0,
     "disp_avg_elas": 1,
-    "disp_avg_rlas": 1,
+    "disp_avg_rlas": 0,
     "ela_fig": {
 	"save_fig": 0,
 	"fig_size": [6, 5],
@@ -25,7 +25,7 @@
 	"fig_title": "Average RLA with 50 stumps",
 	"fig_cmap": "Dark2",
 	"plot_kwargs": {
-	    "linestyle": "-",
+	    "linestyle": "-"
 	}
     },
     "models": [
@@ -76,7 +76,7 @@
 		"max_depth": 1,
 		"learning_rate": 0.1,
 		"booster": "gbtree",
-		"reg_alpha": 0.1,
+		"reg_alpha": 0,
 		"reg_lambda": 0.1,
 		"n_jobs": 2,
 		"random_state": 7
