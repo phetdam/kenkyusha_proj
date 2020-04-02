@@ -12,6 +12,7 @@
 # average ELA/RLA comparison graphs for the models. corrected some sanity checks
 # for configuration file options. added lines to compute ELA/RLA and changed
 # output format to individual models to a single large pickle. edited docstring.
+# renamed kkslib to kyulib so corrected import statements.
 #
 # 04-01-2020
 #
@@ -27,9 +28,9 @@ from textwrap import fill
 from time import time
 
 # import special constants into namespace
-from kkslib._config_keys import *
-from kkslib.utils import DataFrame2Data_Set, model_from_spec, Model_Results
-from kkslib.metrics import accuracies2ela, accuracies2rla, compute_accuracies
+from kyulib._config_keys import *
+from kyulib.utils import DataFrame2Data_Set, model_from_spec, Model_Results
+from kyulib.metrics import accuracies2ela, accuracies2rla, compute_accuracies
 
 __doc__ = """
 main entry point for evaluation of sklearn-compatible models on data sets with
