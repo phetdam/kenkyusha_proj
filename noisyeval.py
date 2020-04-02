@@ -9,7 +9,9 @@
 #
 # completed most of the main body. just need to write functions to compute ELA
 # and RLA matrices, to compute average ELA and RLA vectors, and to plot the
-# average ELA/RLA comparison graphs for the models.
+# average ELA/RLA comparison graphs for the models. corrected some sanity checks
+# for configuration file options. added lines to compute ELA/RLA and changed
+# output format to individual models to a single large pickle. edited docstring.
 #
 # 04-01-2020
 #
@@ -27,7 +29,7 @@ from time import time
 # import special constants into namespace
 from kkslib._config_keys import *
 from kkslib.utils import DataFrame2Data_Set, model_from_spec, Model_Results
-from kkslib.metrics import compute_accuracies
+from kkslib.metrics import accuracies2ela, accuracies2rla, compute_accuracies
 
 __doc__ = """
 main entry point for evaluation of sklearn-compatible models on data sets with
@@ -36,7 +38,7 @@ of accuracy), RLA (relative loss of accuracy) metrics, and optional creation of
 comparative line plots of average model ELA/RLA statistics.
 
 please read README.md for instructions on how to interpret and format the .json
-files that govern the behavior of this script. passing the --help flag will
+file that governs the behavior of this script. passing the --help flag will
 produce some usage instructions and this help blurb."""
 
 _PROGNAME = "noisyeval"
@@ -148,24 +150,30 @@ if __name__ == "__main__":
         # set computation time
         accs_time = time() - time_a
         # compute ela and rla matrices
-
-        # compute average ela and average rla (will be row vector DataFrames)
-        
+        elas = accuracies2ela(accs)
+        rlas = accuracies2rla(accs)
+        # compute average elas and average rlas (will be row vector DataFrames)
+        avg_elas = accuracies2ela(accs, avg_ela = True)
+        avg_rlas = accuracies2rla(accs, avg_rla = True)
         # save accs, accs_time, elas, rlas, average elas and average rlas to
         # Model_Results results attribute using eponymous keys
         mdl_res.results["accs"] = accs
-        #mdl_res.results["accs_time"] = accs_time
-        #mdl_res.results["elas"] = elas
-        #mdl_res.results["rlas"] = rlas
-        #mdl_res.results["avg_elas"] = avg_elas
-        #mdl_res.results["avg_rlas"] = avg_rlas
-    # save Model_Results as dicts to results_dir using model name as file name
+        mdl_res.results["accs_time"] = accs_time
+        mdl_res.results["elas"] = elas
+        mdl_res.results["rlas"] = rlas
+        mdl_res.results["avg_elas"] = avg_elas
+        mdl_res.results["avg_rlas"] = avg_rlas
+    # save Model_Results as dicts in one large dict to results_dir using name of
+    # the config file as the output file name (pickle)
+    models_out = {}
     for mdl_res in mdl_results:
+        # convert individual Model_Results to dicts then key by model name
         res = mdl_res.results
-        res["name"] = mdl_res.name
         res["est"] = mdl_res._est
-        with open(results_dir + "/" + mdl_res.name + ".pickle", "wb") as outf:
-            pickle.dump(res, outf)
+        models_out[mdl_res.name] = res
+    # pickle models_out (argv[1] is file name of config file)
+    with open(results_dir + "/" + argv[1] + ".pickle", "wb") as outf:
+            pickle.dump(models_out, outf)
     # options for printing acc, ela, and rla matrices to the screen
     disp_accs = cfg_data[_DISP_ACCS]
     disp_elas = cfg_data[_DISP_ELAS]
@@ -190,11 +198,9 @@ if __name__ == "__main__":
             if disp_accs == 1:
                 print("{0}\n".format(mdl_res.results["accs"]))
             if disp_elas == 1:
-                pass
-                #print("{0}\n".format(mdl_res.results["elas"]))
+                print("{0}\n".format(mdl_res.results["elas"]))
             if disp_rlas == 1:
-                pass
-                #print("{0}\n".format(mdl_res.results["rlas"]))
+                print("{0}\n".format(mdl_res.results["rlas"]))
     # options for making comparison plots of average ELAs
     save_ela_fig = cfg_data[_SAVE_ELA_FIG]
     save_rla_fig = cfg_data[_SAVE_RLA_FIG]
@@ -204,17 +210,14 @@ if __name__ == "__main__":
         print("{0}: warning: {1} is not iterable, using default size (5, 5)"
               .format(_PROGNAME, _FIG_SIZE))
         fig_size = (5, 5)
-    elif len(fig_size) != 2:
-        print("{0}: warning: len({1}) != 2, using default size (5, 5)"
-              .format(_PROGNAME, _FIG_SIZE))
-        fig_size = (5, 5)
+    elif len(fig_size) == 2: pass
     else:
         print("{0}: warning: invalid {1}, using default size (5, 5)"
               .format(_PROGNAME, _FIG_SIZE))
         fig_size = (5, 5)
     # if option to save the comparison plot of average ELAs is 1, then plot
     if save_ela_fig == 1:
-        print("make avg ela figure")
+        print("make avg rla figure")
     # do nothing if 0
     elif save_ela_fig == 0: pass
     # else raise warning
