@@ -31,9 +31,9 @@ _MODULE_NAME = "_config_keys"
 
 __all__ = ["_DATA_DIR", "_RESULTS_DIR", "_TEST_FRACTION", "_RANDOM_STATE",
            "_NOISE_KINDS", "_NOISE_LEVELS", "_DISP_ACCS", "_DISP_ELAS",
-           "_DISP_RLAS", "_SAVE_ELA_FIG", "_SAVE_RLA_FIG", "_MODELS",
-           "_MODELS_NAME", "_MODELS_MODULE", "_MODELS_MODEL", "_MODELS_PARAMS",
-           "_MAIN_CONFIG_KEYS"]
+           "_DISP_RLAS", "_SAVE_ELA_FIG", "_SAVE_RLA_FIG", "_FIG_SIZE",
+           "_MODELS", "_MODELS_NAME", "_MODELS_MODULE", "_MODELS_MODEL",
+           "_MODELS_PARAMS", "_MAIN_CONFIG_KEYS"]
 
 ### special constants ###
 # in .json config, specify directory of .csv data files to use
@@ -78,7 +78,8 @@ _MODELS_PARAMS = "params"
 # a list of the main constants used .json config to simplify sanity check
 _MAIN_CONFIG_KEYS = [_DATA_DIR, _RESULTS_DIR, _TEST_FRACTION, _RANDOM_STATE,
                      _NOISE_KINDS, _NOISE_LEVELS, _DISP_ACCS, _DISP_ELAS,
-                     _DISP_RLAS, _SAVE_ELA_FIG, _SAVE_RLA_FIG, _MODELS]
+                     _DISP_RLAS, _SAVE_ELA_FIG, _SAVE_RLA_FIG,
+                     _FIG_SIZE, _MODELS]
 
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
