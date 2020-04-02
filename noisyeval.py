@@ -12,7 +12,8 @@
 # average ELA/RLA comparison graphs for the models. corrected some sanity checks
 # for configuration file options. added lines to compute ELA/RLA and changed
 # output format to individual models to a single large pickle. edited docstring.
-# renamed kkslib to kyulib so corrected import statements.
+# renamed kkslib to kyulib so corrected import statements. modified checking of
+# config keys and display option keys and put placeholders for plotting.
 #
 # 04-01-2020
 #
@@ -111,6 +112,21 @@ if __name__ == "__main__":
         print("{0}: error: {1} is not a directory"
               .format(_PROGNAME, results_dir), file = stderr)
         exit(2)
+    # before we start training the models, check the plotting parameters. no one
+    # wants to learn after training for 6 hours that they aren't allowed to make
+    # a graph... that would really suck, wouldn't it
+    # options for making comparison plots of average ELAs
+    ela_fig_opts = cfg_data[_ELA_FIG]
+    rla_fig_opts = cfg_data[_RLA_FIG]
+    # for each one, make sure that all the required keys are present
+    for _ck in _XLA_FIG_KEYS:
+        if _ck not in ela_fig_opts:
+            print(fill("{0}: error: {1} missing required key {2}. please read "
+                       "README.md for instructions on how to format average ELA"
+                       "/RLA comparison plot params"
+                       .format(_PROGNAME, _ELA_FIG, _ck), width = 80),
+                  file = stderr)
+            exit(1)
     # for each model param dict in cfg_data, create a Model_Results object; all
     # the Model_Results objects contain the name, unfitted model. all in a list.
     mdl_results = [Model_Results(mpd["name"], model_from_spec(mpd))
@@ -172,66 +188,67 @@ if __name__ == "__main__":
         res = mdl_res.results
         res["est"] = mdl_res._est
         models_out[mdl_res.name] = res
-    # pickle models_out (argv[1] is file name of config file)
-    with open(results_dir + "/" + argv[1] + ".pickle", "wb") as outf:
+    # pickle models_out. argv[1] has full name of config file, so we first need
+    # to strip the extension (note: we required .json file) and then strip off
+    # either "/" or "\\"; try both since we don't know the system
+    out_file = argv[1][:-5].split("/")[-1].split("\\")[-1]
+    with open(results_dir + "/" + out_file + ".pickle", "wb") as outf:
             pickle.dump(models_out, outf)
-    # options for printing acc, ela, and rla matrices to the screen
-    disp_accs = cfg_data[_DISP_ACCS]
-    disp_elas = cfg_data[_DISP_ELAS]
-    disp_rlas = cfg_data[_DISP_RLAS]
+    # options for printing acc, ela, rla, avg ela, avg rla to the screen (str)
+    disp_opts = [_DISP_ACCS, _DISP_ELAS, _DISP_RLAS, _DISP_AVG_ELAS,
+                 _DISP_AVG_RLAS]
     # if options are 1, print to screen. if 0, do nothing. else, warn
     # note: set these options to 1 in config only if matrices are small.
-    if (disp_accs != 0) and (disp_accs != 1):
-        print("{0}: warning: {1} has value {2}; must be 0 or 1"
-              .format(_PROGNAME, _DISP_ACCS, disp_accs), file = stderr)
-    if (disp_elas != 0) and (disp_elas != 1):
-        print("{0}: warning: {1} has value {2}; must be 0 or 1"
-              .format(_PROGNAME, _DISP_ELAS, disp_elas), file = stderr)
-    if (disp_rlas != 0) and (disp_rlas != 1):
-        print("{0}: warning: {1} has value {2}; must be 0 or 1"
-              .format(_PROGNAME, _DISP_RLAS, disp_rlas), file = stderr)
+    for opt in disp_opts:
+        _flag = cfg_data[opt]
+        if (_flag != 0) and (_flag != 1):
+            print("{0}: warning: {1} has value {2}; must be 0 or 1"
+                  .format(_PROGNAME, opt, _flag), file = stderr)
     # if one of these options is 1, then we run the following loop
-    if (disp_accs == 1) or (disp_elas == 1) or (disp_rlas == 1):
+    disp_out = False
+    for opt in disp_opts:
+        if cfg_data[opt] == 1:
+            disp_out = True
+            break
+    if disp_out == True:
         # do for each Model_Result; also print model class name and name
         for mdl_res in mdl_results:
             print("results for {0} {1}:\n"
                   .format(mdl_res._est.__class__.__name__, mdl_res.name))
-            if disp_accs == 1:
+            # note that the output is in list order, not in config file order.
+            if cfg_data[_DISP_ACCS] == 1:
                 print("{0}\n".format(mdl_res.results["accs"]))
-            if disp_elas == 1:
+            if cfg_data[_DISP_ELAS] == 1:
                 print("{0}\n".format(mdl_res.results["elas"]))
-            if disp_rlas == 1:
+            if cfg_data[_DISP_RLAS] == 1:
                 print("{0}\n".format(mdl_res.results["rlas"]))
-    # options for making comparison plots of average ELAs
-    save_ela_fig = cfg_data[_SAVE_ELA_FIG]
-    save_rla_fig = cfg_data[_SAVE_RLA_FIG]
-    # set fig_size to figure size; if not length 2, issue warning and make None
-    fig_size = cfg_data[_FIG_SIZE]
-    if hasattr(fig_size, "__iter__") == False:
-        print("{0}: warning: {1} is not iterable, using default size (5, 5)"
-              .format(_PROGNAME, _FIG_SIZE))
-        fig_size = (5, 5)
-    elif len(fig_size) == 2: pass
-    else:
-        print("{0}: warning: invalid {1}, using default size (5, 5)"
-              .format(_PROGNAME, _FIG_SIZE))
-        fig_size = (5, 5)
-    # if option to save the comparison plot of average ELAs is 1, then plot
+            if cfg_data[_DISP_AVG_ELAS] == 1:
+                print("{0}\n".format(mdl_res.results["avg_elas"]))
+            if cfg_data[_DISP_AVG_RLAS] == 1:
+                print("{0}\n".format(mdl_res.results["avg_rlas"]))
+    # remember ela_fig_opts and rla_fig_opts? we finally come back to them.
+    # check if we want to plot average ELA comparison fig or not. warn if the
+    # save value is invalid and don't save.
+    save_ela_fig = ela_fig_opts[_FIGS_SAVE_FIG]
     if save_ela_fig == 1:
-        print("make avg rla figure")
-    # do nothing if 0
+        # send all the other keys in ela_fig_opts to the plotting function
+        print("plot and save ela figure")
     elif save_ela_fig == 0: pass
-    # else raise warning
     else:
-        print("{0}: warning: {1} has value {2}; must be 0 or 1"
-              .format(_PROGNAME, _SAVE_ELA_FIG, save_ela_fig), file = stderr)
-    # same for comparison plot of average RLAs
+        print("{0}: warning: {1}[{2}] has value {3}; must be 0 or 1"
+              .format(_PROGNAME, _ELA_FIG, _FIGS_SAVE_FIG, save_ela_fig),
+              file = stderr)
+    # check if we want to plot average RLA comparison fig or not
+    save_rla_fig = rla_fig_opts[_FIGS_SAVE_FIG]
     if save_rla_fig == 1:
-        print("make avg ela figure")
+        # send all the other keys in rla_fig_opts to the plotting function
+        print("plot and save rla figure")
+    # do nothing if 0
     elif save_rla_fig == 0: pass
     else:
-        print("{0}: warning: {1} has value {2}; must be 0 or 1"
-              .format(_PROGNAME, _SAVE_RLA_FIG, save_rla_fig), file = stderr)
-    # total runtime
+        print("{0}: warning: {1}[{2}] has value {3}; must be 0 or 1"
+              .format(_PROGNAME, _RLA_FIG, _FIGS_SAVE_FIG, save_rla_fig),
+              file = stderr)
+    # record and print total runtime
     rt_total = time() - rt_start
     print("total runtime: {0:.5f} s".format(rt_total))
