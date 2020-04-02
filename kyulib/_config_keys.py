@@ -13,7 +13,8 @@
 # added _DISP_AVG_ELAS and _DISP_AVG_RLAS, and removed _SAVE_ELA_FIG and
 # _SAVE_RLA_FIG in exchange for more general _ELA_FIG and _RLA_FIG keys which
 # hold a dict of parameters for both figures. added several figure-related
-# keys to control plot format. moved to kyulib.
+# keys to control plot format. moved to kyulib. added _XLA_FIG_KEYS to make it
+# easier to check all the params needed to plot an ELA/RLA comparison graph.
 #
 # 04-01-2020
 #
@@ -39,7 +40,7 @@ __all__ = ["_DATA_DIR", "_RESULTS_DIR", "_TEST_FRACTION", "_RANDOM_STATE",
            "_RLA_FIG", "_FIGS_SAVE_FIG", "_FIGS_FIG_SIZE", "_FIGS_FIG_TITLE",
            "_FIGS_FIG_CMAP", "_FIGS_PLOT_KWARGS", "_MODELS", "_MODELS_NAME",
            "_MODELS_MODULE", "_MODELS_MODEL", "_MODELS_PARAMS",
-           "_MAIN_CONFIG_KEYS"]
+           "_MAIN_CONFIG_KEYS", "_XLA_FIG_KEYS"]
 
 ### special constants ###
 # in .json config, specify directory of .csv data files to use
@@ -98,6 +99,10 @@ _MAIN_CONFIG_KEYS = [_DATA_DIR, _RESULTS_DIR, _TEST_FRACTION, _RANDOM_STATE,
                      _NOISE_KINDS, _NOISE_LEVELS, _DISP_ACCS, _DISP_ELAS,
                      _DISP_RLAS, _DISP_AVG_ELAS, _DISP_AVG_RLAS, _ELA_FIG,
                      _RLA_FIG, _MODELS]
+
+# a list of the keys used for governing average ELA/RLA comparison plot params
+_XLA_FIG_KEYS = [_FIGS_SAVE_FIG, _FIGS_FIG_SIZE, _FIGS_FIG_TITLE,
+                 _FIGS_FIG_CMAP, _FIGS_PLOT_KWARGS]
 
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
