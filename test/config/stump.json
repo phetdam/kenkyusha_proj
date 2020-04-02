@@ -1,0 +1,87 @@
+{
+    "data_dir": "./test/data",
+    "results_dir": "./test/results",
+    "test_fraction": 0.2,
+    "random_state": 5,
+    "noise_kinds": ["label"],
+    "noise_levels": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
+    "disp_accs": 1,
+    "disp_elas": 1,
+    "disp_rlas": 1,
+    "disp_avg_elas": 1,
+    "disp_avg_rlas": 1,
+    "ela_fig": {
+	"save_fig": 0,
+	"fig_size": [6, 5],
+	"fig_title": "Average ELA with 50 stumps",
+	"fig_cmap": "viridis",
+	"plot_kwargs": {
+	    "linestyle": "-"
+	}
+    },
+    "rla_fig": {
+	"save_fig": 0,
+	"fig_size": [6, 5],
+	"fig_title": "Average RLA with 50 stumps",
+	"fig_cmap": "Dark2",
+	"plot_kwargs": {
+	    "linestyle": "-",
+	}
+    },
+    "models": [
+	{
+	    "name": "logistic",
+	    "module": "sklearn.linear_model",
+	    "model": "LogisticRegression",
+	    "params": {
+		"C": 1,
+		"max_iter": 100
+	    }
+	},
+	{
+	    "name": "adaboost1",
+	    "module": "sklearn.ensemble",
+	    "model": "AdaBoostClassifier",
+	    "params": {
+		"base_estimator": {
+		    "module": "sklearn.tree",
+		    "model": "DecisionTreeClassifier",
+		    "params": {
+			"criterion": "entropy",
+			"max_depth": 1,
+			"random_state": 7
+		    }
+		},
+		"n_estimators": 50,
+		"random_state": 7
+	    }
+	},
+	{
+	    "name": "gboost1",
+	    "module": "sklearn.ensemble",
+	    "model": "GradientBoostingClassifier",
+	    "params": {
+		"n_estimators": 50,
+		"max_depth": 1,
+		"learning_rate": 0.1,
+		"random_state": 7
+	    }
+	},
+	{
+	    "name": "xgboost1",
+	    "module": "xgboost",
+	    "model": "XGBClassifier",
+	    "params": {
+		"n_estimators": 50,
+		"max_depth": 1,
+		"learning_rate": 0.1,
+		"booster": "gbtree",
+		"reg_alpha": 0.1,
+		"reg_lambda": 0.1,
+		"n_jobs": 2,
+		"random_state": 7
+	    }
+	}
+    ]
+}
+
