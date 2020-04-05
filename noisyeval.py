@@ -5,6 +5,16 @@
 #
 # Changelog:
 #
+# 04-05-2020
+#
+# added reference to kyulib.plotting and inserted plotting function. prints a
+# message to stdout for each figure plotted.
+#
+# 04-04-2020
+#
+# reflected the fact that avg_elas and avg_rlas in accuracies2ela and the
+# accuracies2rla functions are now called averages.
+#
 # 04-02-2020
 #
 # completed most of the main body. just need to write functions to compute ELA
@@ -30,6 +40,7 @@ from time import time
 
 # import special constants into namespace
 from kyulib._config_keys import *
+from kyulib.plotting import plot_avg_xla
 from kyulib.utils import DataFrame2Data_Set, model_from_spec, Model_Results
 from kyulib.metrics import accuracies2ela, accuracies2rla, compute_accuracies
 
@@ -170,8 +181,8 @@ if __name__ == "__main__":
         elas = accuracies2ela(accs)
         rlas = accuracies2rla(accs)
         # compute average elas and average rlas (will be row vector DataFrames)
-        avg_elas = accuracies2ela(accs, avg_ela = True)
-        avg_rlas = accuracies2rla(accs, avg_rla = True)
+        avg_elas = accuracies2ela(accs, averages = True)
+        avg_rlas = accuracies2rla(accs, averages = True)
         # save accs, accs_time, elas, rlas, average elas and average rlas to
         # Model_Results results attribute using eponymous keys
         mdl_res.results["accs"] = accs
@@ -226,13 +237,26 @@ if __name__ == "__main__":
                 print("{0}\n".format(mdl_res.results["avg_elas"]))
             if cfg_data[_DISP_AVG_RLAS] == 1:
                 print("{0}\n".format(mdl_res.results["avg_rlas"]))
+    # using mdl_results, create a list of model names
+    mdl_names = [_mr.name for _mr in mdl_results]
     # remember ela_fig_opts and rla_fig_opts? we finally come back to them.
     # check if we want to plot average ELA comparison fig or not. warn if the
     # save value is invalid and don't save.
     save_ela_fig = ela_fig_opts[_FIGS_SAVE_FIG]
     if save_ela_fig == 1:
+        # using mdl_results, create a list of the model average ELAs
+        mdl_avg_elas = [_mr.results["avg_elas"] for _mr in mdl_results]
         # send all the other keys in ela_fig_opts to the plotting function
-        print("plot and save ela figure")
+        fig, ax = plot_avg_xla(mdl_names, mdl_avg_elas,
+                               title = ela_fig_opts[_FIGS_FIG_TITLE],
+                               figsize = ela_fig_opts[_FIGS_FIG_SIZE],
+                               cmap = ela_fig_opts[_FIGS_FIG_CMAP],
+                               xlabel = "noise level",
+                               **ela_fig_opts[_FIGS_PLOT_KWARGS])
+        # save figure in results_dir using out_file and print message
+        ela_out = results_dir + "/" + out_file + "_avg_elas.png"
+        fig.savefig(ela_out)
+        print("saved avg ELA plot to {0}".format(ela_out))
     elif save_ela_fig == 0: pass
     else:
         print("{0}: warning: {1}[{2}] has value {3}; must be 0 or 1"
@@ -241,8 +265,19 @@ if __name__ == "__main__":
     # check if we want to plot average RLA comparison fig or not
     save_rla_fig = rla_fig_opts[_FIGS_SAVE_FIG]
     if save_rla_fig == 1:
+        # using mdl_results, create a list of the model average RLAs
+        mdl_avg_rlas = [_mr.results["avg_rlas"] for _mr in mdl_results]
         # send all the other keys in rla_fig_opts to the plotting function
-        print("plot and save rla figure")
+        fig, ax = plot_avg_xla(mdl_names, mdl_avg_rlas,
+                               title = rla_fig_opts[_FIGS_FIG_TITLE],
+                               figsize = rla_fig_opts[_FIGS_FIG_SIZE],
+                               cmap = rla_fig_opts[_FIGS_FIG_CMAP],
+                               xlabel = "noise level",
+                               **rla_fig_opts[_FIGS_PLOT_KWARGS])
+        # save figure in results_dir using out_file and print message
+        rla_out = results_dir + "/" + out_file + "_avg_rlas.png"
+        fig.savefig(rla_out)
+        print("saved avg RLA plot to {0}".format(rla_out))
     # do nothing if 0
     elif save_rla_fig == 0: pass
     else:
