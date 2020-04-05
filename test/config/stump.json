@@ -9,24 +9,20 @@
     "disp_elas": 0,
     "disp_rlas": 0,
     "disp_avg_elas": 1,
-    "disp_avg_rlas": 0,
+    "disp_avg_rlas": 1,
     "ela_fig": {
-	"save_fig": 0,
+	"save_fig": 1,
 	"fig_size": [6, 5],
 	"fig_title": "Average ELA with 50 stumps",
-	"fig_cmap": "viridis",
-	"plot_kwargs": {
-	    "linestyle": "-"
-	}
+	"fig_cmap": "ocean_r",
+	"plot_kwargs": {}
     },
     "rla_fig": {
-	"save_fig": 0,
+	"save_fig": 1,
 	"fig_size": [6, 5],
 	"fig_title": "Average RLA with 50 stumps",
-	"fig_cmap": "Dark2",
-	"plot_kwargs": {
-	    "linestyle": "-"
-	}
+	"fig_cmap": "jet",
+	"plot_kwargs": {}
     },
     "models": [
 	{
@@ -77,8 +73,9 @@
 		"learning_rate": 0.1,
 		"booster": "gbtree",
 		"reg_alpha": 0,
+		"gamma": 0,
 		"reg_lambda": 0.1,
-		"n_jobs": 2,
+		"n_jobs": 1,
 		"random_state": 7
 	    }
 	}
