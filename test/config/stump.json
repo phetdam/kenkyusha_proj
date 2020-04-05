@@ -5,24 +5,24 @@
     "random_state": 5,
     "noise_kinds": ["label"],
     "noise_levels": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6],
-    "disp_accs": 1,
+    "disp_accs": 0,
     "disp_elas": 0,
     "disp_rlas": 0,
-    "disp_avg_elas": 1,
-    "disp_avg_rlas": 1,
+    "disp_avg_elas": 0,
+    "disp_avg_rlas": 0,
     "ela_fig": {
 	"save_fig": 1,
 	"fig_size": [6, 5],
 	"fig_title": "Average ELA with 50 stumps",
 	"fig_cmap": "ocean_r",
-	"plot_kwargs": {}
+	"plot_kwargs": [{}, {}, {}, {"marker": "s", "markersize": 5}]
     },
     "rla_fig": {
 	"save_fig": 1,
 	"fig_size": [6, 5],
 	"fig_title": "Average RLA with 50 stumps",
-	"fig_cmap": "jet",
-	"plot_kwargs": {}
+	"fig_cmap": "plasma",
+	"plot_kwargs": [{}, {}, {}, {"marker": "s", "markersize": 5}]
     },
     "models": [
 	{
