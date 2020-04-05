@@ -3,6 +3,15 @@
 #
 # Changelog:
 #
+# 04-04-2020
+#
+# started work on the RLA matrix computing function. modified the docstring and
+# body of accuracies2ela and changed the kwarg from avg_ela to averages; the
+# changes to the function body were just replacing avg_ela with averages. also
+# renamed accuracies2ela to accuracies2xla and just made accuracies2[e | r]la
+# wrappers for accuracies2xla since computation of both metrics only involves
+# changing some column names and using a different metric function.
+#
 # 04-02-2020
 #
 # modified changelog to reflect starting on ELA/RLA matrix computing functions,
@@ -286,15 +295,12 @@ def compute_accuracies(est, dsets, noise_kinds = None, noise_levels = None,
     # return DataFrame df
     return df
 
-def accuracies2rla(acc_df, avg_rla = False):
-    return None
-
-def accuracies2ela(acc_df, avg_ela = False):
+def accuracies2xla(acc_df, metric = None, averages = False):
     """
     given a properly formatted DataFrame produced by compute_accuracies or a
-    comparable method, return a DataFrame of ELA statistics. if the input
+    comparable method, return a DataFrame of xLA statistics. if the input
     DataFrame has shape (nrows, ncols), the shape of the returned DataFrame
-    containing the ELA statistics will be (nrows, ncols - 1), unless avg_ela
+    containing the xLA statistics will be (nrows, ncols - 1), unless averages
     is True, in which case the shape will be (1, ncols - 1).
 
     a properly formatted acc_df will have a string row index of Data_Set names
@@ -302,50 +308,67 @@ def accuracies2ela(acc_df, avg_ela = False):
     following columns have the format "acc_[noise kind]_[noise level]". the
     returned DataFrame will have columns "ela_[noise kind]_[noise level]".
 
+    currently, the function can only support ELA and RLA metrics.
+
     parameters:
 
-    acc_df     DataFrame of accuracies for an estimator on different data sets
-               and with different noise levels. if there are n_kinds noise
-               types, n_levels noise levels, and n_dsets data sets, then the
-               DataFrame will have shape (n_dsets, n_kinds * n_levels + 1). the
-               row index of acc_df should be the string Data_Set names, and the
-               column index of acc_df, save for the first column (can be any
-               str), should have the format "acc_kind_level".
-    avg_ela    optional boolean, default False. if set to True, instead of
-               computing ELA metrics for each data set, the ELA statistics will
-               be averaged over each noise level to produce an average ELA.
+    acc_df      DataFrame of accuracies for an estimator on different data sets
+                and with different noise levels. if there are n_kinds noise
+                types, n_levels noise levels, and n_dsets data sets, then the
+                DataFrame will have shape (n_dsets, n_kinds * n_levels + 1). the
+                row index of acc_df should be the string Data_Set names, and the
+                column index of acc_df, save for the first column (can be any
+                str), should have the format "acc_kind_level".
+    metric      str specifying which metric to use when calculating the xLA
+                matrix. currently only "ela" and "rla" are supported.
+    averages    optional boolean, default False. if set to True, instead of
+                computing xLA metrics for each data set, the xLA statistics will
+                be averaged over each noise level to produce an average xLA.
     """
     _fn = accuracies2ela.__name__
     # type and shape check
     if not isinstance(acc_df, DataFrame):
         raise TypeError("{0}: acc_df must be DataFrame, not {1}"
                         .format(_fn, type(acc_df)))
-    if not isinstance(avg_ela, bool):
-        raise TypeError("{0}: avg_ela must be bool, not {1}"
-                        .format(_fn, type(avg_ela)))
+    if not isinstance(metric, str):
+        # if None, remind user that they need to specify a metric
+        if metric is None:
+            raise ValueError("{0}: must specify a metric".format(_fn))
+        # else raise TypeError
+        raise TypeError("{0}: metric must be str, not {1}"
+                        .format(_fn, type(metric)))
+    if not isinstance(averages, bool):
+        raise TypeError("{0}: averages must be bool, not {1}"
+                        .format(_fn, type(averages)))
     # check the row and column index shapes
     if acc_df.index.shape[0] == 0:
         raise ValueError("{0}: acc_df must have at least one row".format(_fn))
     if acc_df.columns.shape[0] <= 1:
         raise ValueError("{0}: acc_df must have at least two columns"
                          .format(_fn))
-    # take all but first column of acc_df and change prefix from "acc" to "ela"
-    # if computing full ela matrix, else change to ""
-    ela_cols = list(acc_df.columns[1:])
-    if avg_ela == True:
-        for i in range(len(ela_cols)):
-            ela_cols[i] = ela_cols[i].replace("acc_", "")
+    # check metric and set its function: if not "ela" or "rla", raise ValueError
+    xla = None
+    if metric == "ela": xla = ela
+    elif metric == "rla": xla = rla
     else:
-        for i in range(len(ela_cols)):
-            ela_cols[i] = ela_cols[i].replace("acc", "ela")
-    # create output matrix of ELAs with no data
-    ela_df = DataFrame(data = None, index = acc_df.index, columns = ela_cols)
+        raise ValueError("{0}: metric {1} is not supported".format(_fn, metric))
+    # take all but first column of acc_df and change prefix from "acc" to metric
+    # if computing full xla matrix, else change to ""
+    xla_cols = list(acc_df.columns[1:])
+    if averages == True:
+        for i in range(len(xla_cols)):
+            xla_cols[i] = xla_cols[i].replace("acc_", "")
+    else:
+        for i in range(len(xla_cols)):
+            xla_cols[i] = xla_cols[i].replace("acc", metric)
+    # create output matrix of xLAs with no data
+    xla_df = DataFrame(data = None, index = acc_df.index, columns = xla_cols)
     # get label of first column of acc_df
     acc_0 = acc_df.columns[0]
-    # for each noise data set and noise level, compute ELA metric
-    for ds in ela_df.index:
-        # nl is the ela_df label, ol is the acc_df label
-        for nl, ol in zip(ela_df.columns, acc_df.columns[1:]):
+    # for each noise data set and noise level, compute xLA metric
+    for ds in xla_df.index:
+        # nl is the xla_df label, ol is the acc_df label
+        for nl, ol in zip(xla_df.columns, acc_df.columns[1:]):
             # get a float version of the noise level
             fnl = nl.split("_")[-1]
             try: fnl = float(fnl)
@@ -353,19 +376,37 @@ def accuracies2ela(acc_df, avg_ela = False):
                 raise ValueError("{0}: improperly formatted column label. see "
                                  "function docstring for instructions"
                                  .format(_fn)) from ve
-            # compute ELA using acc_df values and write to ela_df
-            ela_df.loc[ds, nl] = ela(acc_df.loc[ds, acc_0], acc_df.loc[ds, ol])
-    # if avg_ela is True
-    if avg_ela == True:
-        # create DataFrame for average ELAs
-        avg_elas = DataFrame(data = None, index = ["avg_ela"],
-                             columns = ela_df.columns)
-        # average across noise levels and then return avg_elas
-        for nl in avg_elas.columns:
-            avg_elas.loc["avg_ela", nl] = mean(ela_df.loc[:, nl])
-        return avg_elas
-    # else return ela_df
-    return ela_df
+            # compute xLA using acc_df values and write to xla_df
+            xla_df.loc[ds, nl] = xla(acc_df.loc[ds, acc_0], acc_df.loc[ds, ol])
+    # if averages is True
+    if averages == True:
+        # create DataFrame for average xLAs
+        avg_xlas = DataFrame(data = None, index = ["avg_" + metric],
+                             columns = xla_df.columns)
+        # average across noise levels and then return avg_xlas
+        for nl in avg_xlas.columns:
+            avg_xlas.loc["avg_" + metric, nl] = mean(xla_df.loc[:, nl])
+        return avg_xlas
+    # else return xla_df
+    return xla_df
+
+def accuracies2ela(acc_df, averages = False):
+    """
+    wrapper for accuracies2xla, with metric "ela".
+
+    see docstring for accuracies2xla for parameter details and see the docstring
+    for ela for details about the ELA, or equalized loss of accuracy, metric.
+    """
+    return accuracies2xla(acc_df, metric = "ela", averages = averages)
+
+def accuracies2rla(acc_df, averages = False):
+    """
+    wrapper for accuracies2xla, with metric "rla".
+
+    see docstring for accuracies2xla for parameter details and see the docstring
+    for rla for details about the RLA, or relative loss of accuracy, metric.
+    """
+    return accuracies2xla(acc_df, metric = "rla", averages = averages)
     
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
