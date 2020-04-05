@@ -6,6 +6,8 @@
 #
 # initial creation. added plot_avg_xla, which supports customized figure sizes,
 # Axes title, x and y labels, matplotlib.cm colormap, and kwargs for lines.
+# added option to pass in kwargs to matplotlib.axes.Axes.plot for each line.
+# added forgotten length checking for model names, xLAs, and plot kwargs.
 
 from matplotlib.pyplot import subplots
 import matplotlib.cm as cm
@@ -20,7 +22,7 @@ dependencies: matplotlib, pandas
 _MODULE_NAME = "plotting"
 
 def plot_avg_xla(mdl_names, mdl_xlas, title = "", figsize = (6, 5),
-                 cmap = "viridis", xlabel = "", ylabel = "", **plot_kwargs):
+                 cmap = "viridis", xlabel = "", ylabel = "", plot_kwargs = None):
     """
     gives an iterable of n_models str model names and an iterable of n_models
     DataFrames of average xLAs, with shapes (1, n_levels - 1) where n_levels is
@@ -43,8 +45,11 @@ def plot_avg_xla(mdl_names, mdl_xlas, title = "", figsize = (6, 5),
     xlabel       optional str x-axis label, default ""
     ylabel       optional str y-axis label, default ""
     cmap         optional str matplotlib.cm color map name, default "viridis"
-    plot_kwargs  keyword arguments to pass to matplotlib.axes.Axes.plot, which
-                 will be applied for each line drawn
+    plot_kwargs  optional iterable of n_models dicts containing keyword 
+                 arguments to pass to matplotlib.axes.Axes.plot, with one dict
+                 corresponding to a name in mdl_names and its xlas DataFrame
+                 in mdl_xlas. default None, which passes no keyword arguments.
+                 passing an empty list also passes no keyword arguments.
     """
     _fn = plot_avg_xla.__name__
     # sanity checks
@@ -85,20 +90,42 @@ def plot_avg_xla(mdl_names, mdl_xlas, title = "", figsize = (6, 5),
     if len(mdl_names) != len(mdl_xlas):
         raise ValueError("{0}: mdl_names and mdl_xlas must have the same length"
                          .format(_fn))
+    if plot_kwargs is None: pass
+    elif hasattr(plot_kwargs, "__iter__"):
+        # don't allow strings or dicts
+        if isinstance(plot_kwargs, str) or isinstance(plot_kwargs, dict):
+            raise TypeError("{0}: iterable plot_kwargs must not be str or dict"
+                            .format(_fn))
+    else:
+        raise TypeError("{0}: plot_kwargs must be an iterable, not {1}"
+                        .format(_fn, type(plot_kwargs)))
+    # check that length of mdl_names and mdl_xlas are the same length
+    if len(mdl_names) != len(mdl_xlas):
+        raise ValueError("{0}: mdl_names and mdl_xlas must have the same length"
+                         .format(_fn))
+    # get number of models n_models
+    n_models = len(mdl_names)
+    # if plot_kwargs is None or has length zero, make it a list of empty dicts
+    # length n_models, else check that its length is equal to n_models
+    if (plot_kwargs is None) or (len(plot_kwargs) == 0):
+        plot_kwargs = [{} for _ in range(n_models)]
+    elif len(plot_kwargs) == n_models: pass
+    else:
+        raise ValueError("{0}: plot_kwargs must have the same length as "
+                         "mdl_names and mdl_xlas".format(_fn))
     # create fig, ax from subplots + set ax title
     fig, ax = subplots(nrows = 1, ncols = 1, figsize = figsize)
     ax.set_title(title)
     # get color map from cm
     cmap_obj = getattr(cm, cmap)
-    # get number of models n_models and get n_models colors from the cmap in cm.
-    # to reduce unnecessary contrast between colors, we divide [0, 1] into 2 +
-    # n_models divisions and ignore the endpoints.
-    n_models = len(mdl_names)
+    # get n_models colors from the cmap in cm. to reduce unnecessary contrast
+    # between colors, we divide [0, 1] into 2 + n_models divisions and ignore
+    # the endpoints. this avoids the extreme standardized colors 0, 1.
     colors = [None for _ in range(n_models)]
     for i in range(n_models):
         colors[i] = cmap_obj((i + 1) / (n_models + 2))
-    # for each of the DataFrames of average xLAs
-    for lc, xlas in zip(colors, mdl_xlas):
+    # for each triple of colors, DataFrames of average xLAs, and plot kwargs
+    for lc, xlas, kwargs in zip(colors, mdl_xlas, plot_kwargs):
         # first check if xlas is a proper DataFrame
         if not isinstance(xlas, DataFrame):
             raise TypeError("{0}: elements of mdl_xlas must be DataFrames"
@@ -114,8 +141,12 @@ def plot_avg_xla(mdl_names, mdl_xlas, title = "", figsize = (6, 5),
                                  "formatted. please see function docstring"
                                  .format(_fn))
             levels[i] = nl
+        # check if kwargs is a dict; if not, raise TypeError
+        if not isinstance(kwargs, dict):
+            raise TypeError("{0}: elements of plot_kwargs must be dict"
+                            .format(_fn))
         # plot the noise levels on x-axis and xlas values on y-axis with kwargs
-        ax.plot(levels, xlas.iloc[0, :], color = lc, **plot_kwargs)
+        ax.plot(levels, xlas.iloc[0, :], color = lc, **kwargs)
     # add legend, xlabel, ylabel to the axes and return fig, ax
     ax.legend(mdl_names)
     ax.set_xlabel(xlabel)
