@@ -8,7 +8,9 @@
 # 04-05-2020
 #
 # added reference to kyulib.plotting and inserted plotting function. prints a
-# message to stdout for each figure plotted.
+# message to stdout for each figure plotted, and prints message to stdout for
+# each model evaluation that is completed with model name, class, and time.
+# updated to allow individual line kwargs when plotting with plot_avg_xlas.
 #
 # 04-04-2020
 #
@@ -191,6 +193,11 @@ if __name__ == "__main__":
         mdl_res.results["rlas"] = rlas
         mdl_res.results["avg_elas"] = avg_elas
         mdl_res.results["avg_rlas"] = avg_rlas
+        # print message to screen indicating completion
+        print("{0}: evaluation completed ({1}, time = {2:.5f} s)"
+              .format(mdl_res.name, mdl_res._est.__class__.__name__, accs_time))
+    # print extra newline to divide completion messages and model results if any
+    print()
     # save Model_Results as dicts in one large dict to results_dir using name of
     # the config file as the output file name (pickle)
     models_out = {}
@@ -252,7 +259,7 @@ if __name__ == "__main__":
                                figsize = ela_fig_opts[_FIGS_FIG_SIZE],
                                cmap = ela_fig_opts[_FIGS_FIG_CMAP],
                                xlabel = "noise level",
-                               **ela_fig_opts[_FIGS_PLOT_KWARGS])
+                               plot_kwargs = ela_fig_opts[_FIGS_PLOT_KWARGS])
         # save figure in results_dir using out_file and print message
         ela_out = results_dir + "/" + out_file + "_avg_elas.png"
         fig.savefig(ela_out)
@@ -273,7 +280,7 @@ if __name__ == "__main__":
                                figsize = rla_fig_opts[_FIGS_FIG_SIZE],
                                cmap = rla_fig_opts[_FIGS_FIG_CMAP],
                                xlabel = "noise level",
-                               **rla_fig_opts[_FIGS_PLOT_KWARGS])
+                               plot_kwargs = rla_fig_opts[_FIGS_PLOT_KWARGS])
         # save figure in results_dir using out_file and print message
         rla_out = results_dir + "/" + out_file + "_avg_rlas.png"
         fig.savefig(rla_out)
