@@ -7,6 +7,8 @@
 #
 # modified accuracies2xla to also return xLA statistics for the accuracy without
 # any noise added to the data set, as this statistic is meaningful for ELA.
+# corrected incorrect reference to accuracies2ela name and fixed check that
+# originally required two columns in the incoming accuracy DataFrame.
 #
 # 04-04-2020
 #
@@ -331,7 +333,7 @@ def accuracies2xla(acc_df, metric = None, averages = False):
                 computing xLA metrics for each data set, the xLA statistics will
                 be averaged over each noise level to produce an average xLA.
     """
-    _fn = accuracies2ela.__name__
+    _fn = accuracies2xla.__name__
     # type and shape check
     if not isinstance(acc_df, DataFrame):
         raise TypeError("{0}: acc_df must be DataFrame, not {1}"
@@ -349,8 +351,8 @@ def accuracies2xla(acc_df, metric = None, averages = False):
     # check the row and column index shapes
     if acc_df.index.shape[0] == 0:
         raise ValueError("{0}: acc_df must have at least one row".format(_fn))
-    if acc_df.columns.shape[0] <= 1:
-        raise ValueError("{0}: acc_df must have at least two columns"
+    if acc_df.columns.shape[0] < 1:
+        raise ValueError("{0}: acc_df must have at least one column"
                          .format(_fn))
     # check metric and set its function: if not "ela" or "rla", raise ValueError
     xla = None
