@@ -3,6 +3,11 @@
 #
 # Changelog:
 #
+# 04-05-2020
+#
+# modified accuracies2xla to also return xLA statistics for the accuracy without
+# any noise added to the data set, as this statistic is meaningful for ELA.
+#
 # 04-04-2020
 #
 # started work on the RLA matrix computing function. modified the docstring and
@@ -300,8 +305,9 @@ def accuracies2xla(acc_df, metric = None, averages = False):
     given a properly formatted DataFrame produced by compute_accuracies or a
     comparable method, return a DataFrame of xLA statistics. if the input
     DataFrame has shape (nrows, ncols), the shape of the returned DataFrame
-    containing the xLA statistics will be (nrows, ncols - 1), unless averages
-    is True, in which case the shape will be (1, ncols - 1).
+    containing the xLA statistics will also be (nrows, ncols), unless averages
+    is True, in which case the shape will be (1, ncols). this means that the xLA
+    statistic is also computed for column of "base" accuracies as well.
 
     a properly formatted acc_df will have a string row index of Data_Set names
     and a string column index, where the first column is usually "acc_0" and 
@@ -352,9 +358,10 @@ def accuracies2xla(acc_df, metric = None, averages = False):
     elif metric == "rla": xla = rla
     else:
         raise ValueError("{0}: metric {1} is not supported".format(_fn, metric))
-    # take all but first column of acc_df and change prefix from "acc" to metric
-    # if computing full xla matrix, else change to ""
-    xla_cols = list(acc_df.columns[1:])
+    # take all the columns of acc_df and change prefix from "acc" to metric if
+    # computing full xla matrix, else change to "" for averages. for averages,
+    # note that the first column will end up being "0"
+    xla_cols = list(acc_df.columns)
     if averages == True:
         for i in range(len(xla_cols)):
             xla_cols[i] = xla_cols[i].replace("acc_", "")
@@ -365,10 +372,11 @@ def accuracies2xla(acc_df, metric = None, averages = False):
     xla_df = DataFrame(data = None, index = acc_df.index, columns = xla_cols)
     # get label of first column of acc_df
     acc_0 = acc_df.columns[0]
-    # for each noise data set and noise level, compute xLA metric
+    # for each noise data set and noise level, compute xLA metric. again, note
+    # that the original data set will also be considered as well.
     for ds in xla_df.index:
         # nl is the xla_df label, ol is the acc_df label
-        for nl, ol in zip(xla_df.columns, acc_df.columns[1:]):
+        for nl, ol in zip(xla_df.columns, acc_df.columns):
             # get a float version of the noise level
             fnl = nl.split("_")[-1]
             try: fnl = float(fnl)
