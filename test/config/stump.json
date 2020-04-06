@@ -8,7 +8,7 @@
     "disp_accs": 0,
     "disp_elas": 0,
     "disp_rlas": 0,
-    "disp_avg_elas": 0,
+    "disp_avg_elas": 1,
     "disp_avg_rlas": 0,
     "ela_fig": {
 	"save_fig": 1,
