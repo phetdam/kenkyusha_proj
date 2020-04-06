@@ -358,7 +358,9 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     samples in the copy. returns a Data_Set that is a copy of the original, with
     the specified noise added to a specified fraction of the train/test samples.
 
-    currently, only "label" noise is supported.
+    currently, only "label" noise is supported. also, note that if fraction = 0,
+    then the original Data_Set will simply be deep copied and have its
+    added_noise_type attribute modified to kind.
 
     not thread safe due to call to numpy.random.seed!
 
