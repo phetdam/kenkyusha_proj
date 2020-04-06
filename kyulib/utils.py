@@ -2,6 +2,12 @@
 #
 # Changelog:
 #
+# 04-05-2020
+#
+# added "identity" operation for noisy_copy; if noise fraction is zero, then the
+# function will just return an exact copy of the original Data_Set, although the
+# added_noise_type will be changed to indicate that it is not the original.
+#
 # 04-02-2020
 #
 # added references to constants in ._config_keys to avoid hardcoding. updated
@@ -359,7 +365,7 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
     parameters:
 
     ds              Data_Set
-    fraction        optional float in (0, 1) indicating what fraction of the 
+    fraction        optional float in [0, 1) indicating what fraction of the 
                     training and test sets should be affected, default 0.2
     kind            optional str, the kind of noise added to ds, default "label"
     random_state    optional int to seed the numpy PRNG, default None
@@ -375,8 +381,8 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
         raise TypeError("{0}: ds: Data_Set expected, {1} received"
                         .format(_fn, type(ds)))
     if (not isinstance(fraction, float)) or \
-       ((fraction <= 0) or (fraction >= 1)):
-        raise TypeError("{0}: fraction: float between (0, 1) expected, {1} "
+       ((fraction < 0) or (fraction >= 1)):
+        raise TypeError("{0}: fraction: float between [0, 1) expected, {1} "
                         "received".format(_fn, type(fraction)))
     if not isinstance(kind, str):
         raise TypeError("{0}: kind: str expected, {1} received"
@@ -386,6 +392,10 @@ def noisy_copy(ds, fraction = 0.2, kind = "label", random_state = None):
                         .format(_fn, type(random_state)))
     # create deep copy the original data set ds
     ds_copy = deepcopy(ds)
+    # if fraction == 0, return ds_copy after setting the added_noise_type
+    if fraction == 0:
+        ds_copy.added_noise_type = kind
+        return ds_copy
     # get number of training and test samples
     n_tn, n_tt = ds.X_train.shape[0], ds.X_test.shape[0]
     # create index arrays for training and test data sets
