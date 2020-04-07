@@ -2,24 +2,47 @@
 
 ![./banner.png](./banner.png)
 
-_last updated: 03-30-2020_  
+_last updated: 04-07-2020_  
 _file created: 03-23-2020_
 
-Project folder for the BAC Research Team's study of boosting algorithm performance on noisy data sets, with a special focus on XGBoost. More to come, so stay tuned.
+Project folder for the BAC Research Team's study of boosting algorithm performance on noisy data sets, with a special focus on XGBoost. This project was motivated by prior experiences with AdaBoost being defeated by label noise, which is a known shortcoming, and theoretical curiosity with regards to gradient boosting, the robustness of boosting to noise, XGBoost, and the XGBoost implementation.
 
 **Remark.** This directory is subject to change at any notice due to its state of active development.
 
-## Data files
+## How to use
 
-All data files used in this project may be found in the `./data` directory. The raw .csv data files downloaded from OpenML can be found in `./data/csv_raw`, while the [minimally] cleaned .csv data files can be found in `./data/csv_clean`. We used 8 different datasets for our study and their brief descriptions are below. No feature engineering was applied to any data set.
+**Remark.** The `--warm-start` option has not yet been implemented, so training times may be exceedingly long if you use any of the JSON files from `config`. Please use one of the test configurations in `test/config` instead.
 
-* **iris**
+Simply `git clone` this repository onto your local machine and browse around. If you are interested in reproducing our results, please execute `noisyeval.py` with an appropriate JSON configuration file, say `foo.json`, either with `./noisyeval.py foo.json --warm-start` in the `bash` shell or by invoking `python noisyeval.py foo.json --warm-start`. The option `--warm-start` will instruct `noisyeval.py` to only compute results if there is no preexisting output pickle in the directory it writes results to.
 
-The classic iris data set. 150 data points, 4 feature columns, and 3 target classes. OpenML link [here](https://www.openml.org/d/61).
+Please read `doc/config_format.md` for instructions on how to write your own JSON model configurations.
 
-* **optdigits**
+## Directories
 
-Handwritten digits for optical recognition, from UCI. 5620 data points, 64 feature columns, 10 target classes. OpenML link [here](https://www.openml.org/d/28).
+Below are some brief descriptions of the directories in this repository.
 
-Other data set descriptions to be added.
+ * **config**
 
+The `config` directory contains the JSON configuration files used to produce experimental results.
+
+ * **data**
+
+The `data` directory, as implied, contains all the data used for this project. The raw CSV data files downloaded from OpenML are in `data/csv_raw`, where the [minimally] cleaned CSV data files used for model evaluation are in `data/csv_clean`.
+
+ * **doc**
+
+The `doc` directory contains relevant documentation. File `data_descs.md` contains descriptions for each of the 16 data sets we used in this project, and file `config_format.md` contains instructions on how to interpret and write your own JSON configuration files to feed to `noisyeval.py`, the script we used for evaluating the models.
+
+ * **kyulib**
+
+The `kyulib` directory is a local Python package containing the [little] library code used for this project. Each function and class in each of the module files, as well as the module files themselves, have docstrings that can be read using the `help` command in the Python interpreter.
+
+* **results**
+
+The `results` directory, as implied, contains the main experimental results from running `noisyeval.py` with the main configuration files in `config`. Output files are Python pickles, with PNG files for the average ELA/RLA plots.
+
+**Remark.** For more information on ELA and RLA, see [this paper](https://doi.org/10.1016/j.neucom.2014.11.086) or read the docstrings for the functions `ela` and `rla` in module `kyulib.metrics`.
+
+* **test**
+
+The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains sample evaluation results.
