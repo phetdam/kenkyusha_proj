@@ -2,6 +2,10 @@
 #
 # Changelog:
 #
+# 04-09-2020
+#
+# edited try/except statement in model_from_spec to remove exception chaining.
+#
 # 04-05-2020
 #
 # added "identity" operation for noisy_copy; if noise fraction is zero, then the
@@ -486,7 +490,7 @@ def model_from_spec(spec, _depth = 1):
     try: _mdl = import_module(n_module)
     except ImportError as ie:
         raise ImportError("{0}: could not import module {1}"
-                          .format(_fn, n_module)) from ie
+                          .format(_fn, n_module)) from None
     # check if module has the desired attribute; if not raise AttributeError
     if not hasattr(_mdl, n_model):
         raise AttributeError("{0}: module {1} does not have attribute {2}"
