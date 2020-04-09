@@ -3,6 +3,10 @@
 #
 # Changelog:
 #
+# 04-09-2020
+#
+# edited try/except statement in accuracies2xla to remove exception chaining.
+#
 # 04-05-2020
 #
 # modified accuracies2xla to also return xLA statistics for the accuracy without
@@ -382,10 +386,11 @@ def accuracies2xla(acc_df, metric = None, averages = False):
             # get a float version of the noise level
             fnl = nl.split("_")[-1]
             try: fnl = float(fnl)
+            # raise from None suppresses exception chaining
             except ValueError as ve:
                 raise ValueError("{0}: improperly formatted column label. see "
                                  "function docstring for instructions"
-                                 .format(_fn)) from ve
+                                 .format(_fn)) from None
             # compute xLA using acc_df values and write to xla_df
             xla_df.loc[ds, nl] = xla(acc_df.loc[ds, acc_0], acc_df.loc[ds, ol])
     # if averages is True
