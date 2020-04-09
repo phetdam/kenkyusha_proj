@@ -2,6 +2,10 @@
 #
 # Changelog:
 #
+# 04-09-2020
+#
+# edited try/except in plot_avg_xla to remove exception chaining.
+#
 # 04-05-2020
 #
 # initial creation. added plot_avg_xla, which supports customized figure sizes,
@@ -136,10 +140,11 @@ def plot_avg_xla(mdl_names, mdl_xlas, title = "", figsize = (6, 5),
             # try to split by _ and check if last arg is a float
             nl = col.split("_")[-1]
             try: nl = float(nl)
-            except ValueError as ve:
+            # raise from None removes exception chaining
+            except ValueError:
                 raise ValueError("{0}: columns of xLA DataFrame are incorrectly"
                                  "formatted. please see function docstring"
-                                 .format(_fn))
+                                 .format(_fn)) from None
             levels[i] = nl
         # check if kwargs is a dict; if not, raise TypeError
         if not isinstance(kwargs, dict):
