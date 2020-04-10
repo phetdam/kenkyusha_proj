@@ -5,6 +5,12 @@
 #
 # Changelog:
 #
+# 04-09-2020
+#
+# added _WARM_START key for indication on whether to run noisyeval.py using
+# existing output if any to save computation cost when redoing graphs/output.
+# also added list of keys that must be in a model parameter dict.
+#
 # 04-02-2020
 #
 # changed _RESULT_DIR to _RESULTS_DIR. added _TEST_FRACTION and _RANDOM_STATE.
@@ -38,9 +44,9 @@ __all__ = ["_DATA_DIR", "_RESULTS_DIR", "_TEST_FRACTION", "_RANDOM_STATE",
            "_NOISE_KINDS", "_NOISE_LEVELS", "_DISP_ACCS", "_DISP_ELAS",
            "_DISP_RLAS", "_DISP_AVG_ELAS", "_DISP_AVG_RLAS", "_ELA_FIG",
            "_RLA_FIG", "_FIGS_SAVE_FIG", "_FIGS_FIG_SIZE", "_FIGS_FIG_TITLE",
-           "_FIGS_FIG_CMAP", "_FIGS_PLOT_KWARGS", "_MODELS", "_MODELS_NAME",
-           "_MODELS_MODULE", "_MODELS_MODEL", "_MODELS_PARAMS",
-           "_MAIN_CONFIG_KEYS", "_XLA_FIG_KEYS"]
+           "_FIGS_FIG_CMAP", "_FIGS_PLOT_KWARGS", "_WARM_START", "_MODELS",
+           "_MODELS_NAME", "_MODELS_MODULE", "_MODELS_MODEL", "_MODELS_PARAMS",
+           "_MAIN_CONFIG_KEYS", "_XLA_FIG_KEYS", "_MODELS_KEYS"]
 
 ### special constants ###
 # in .json config, specify directory of .csv data files to use
@@ -83,6 +89,13 @@ _FIGS_FIG_TITLE = "fig_title"
 _FIGS_FIG_CMAP = "fig_cmap"
 # in .json config, kwargs to pass to matplotlib.axes.Axes.plot (dict)
 _FIGS_PLOT_KWARGS = "plot_kwargs"
+# in .json config, indicates whether or not to run noisyeval.py with warm start.
+# warm start means noisyeval.py will look for output pickle with same file name
+# as config file in specified results dir. if found, results are loaded from
+# that file, else they will be recomputed from scratch. useful for repainting
+# graphs with different parameters by changing _ELA_FIG and _RLA_FIG params
+# while avoiding the cost of recomputing. 1/0 true/false.
+_WARM_START = "warm_start"
 # in .json config, give list of dicts specifying model hyperparameters
 _MODELS = "models"
 # in _MODELS list, for a dict, gives name of model
@@ -98,11 +111,14 @@ _MODELS_PARAMS = "params"
 _MAIN_CONFIG_KEYS = [_DATA_DIR, _RESULTS_DIR, _TEST_FRACTION, _RANDOM_STATE,
                      _NOISE_KINDS, _NOISE_LEVELS, _DISP_ACCS, _DISP_ELAS,
                      _DISP_RLAS, _DISP_AVG_ELAS, _DISP_AVG_RLAS, _ELA_FIG,
-                     _RLA_FIG, _MODELS]
+                     _RLA_FIG, _WARM_START, _MODELS]
 
 # a list of the keys used for governing average ELA/RLA comparison plot params
 _XLA_FIG_KEYS = [_FIGS_SAVE_FIG, _FIGS_FIG_SIZE, _FIGS_FIG_TITLE,
                  _FIGS_FIG_CMAP, _FIGS_PLOT_KWARGS]
+
+# a list of the keys for a dict specifying model parameters
+_MODELS_KEYS = [_MODELS_NAME, _MODELS_MODULE, _MODELS_MODEL, _MODELS_PARAMS]
 
 if __name__ == "__main__":
     print("{0}: do not run module as script".format(_MODULE_NAME),
