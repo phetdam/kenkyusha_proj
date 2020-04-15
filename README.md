@@ -43,7 +43,7 @@ The `kyulib` directory is a local Python package containing the [little] library
 
 The `results` directory, as implied, contains the main experimental results from running `noisyeval.py` with the main configuration files in `config`. Output files are Python pickles, with PNG files for the average ELA/RLA plots.
 
-**Remark.** For more information on ELA and RLA, see [this paper](https://doi.org/10.1016/j.neucom.2014.11.086) or read the docstrings for the functions `ela` and `rla` in module `kyulib.metrics`.
+**Remark.** For info on ELA and RLA, see [this paper](https://doi.org/10.1016/j.neucom.2014.11.086) or read the docstrings for functions `ela` and `rla` in module `kyulib.metrics`.
 
 * **test**
 
