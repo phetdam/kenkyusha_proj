@@ -9,7 +9,7 @@ Project folder for the BAC Research Team's study of boosting algorithm performan
 
 **Remark.** This directory is subject to change at any notice due to its state of active development.
 
-**Remark.** Evaluation times stored in the output pickles should be taken with a grain of salt. The machine used to run the evaluations suffered mechanical damage to its cooling fan and has since exhibited noticeably slower and more erratic performance.
+**Remark.** Evaluation times stored in the output pickles should be taken with a grain of salt. The machine running evaluations suffered mechanical damage to its cooling fan and has since exhibited noticeably slower and more erratic performance.
 
 ## How to use
 
