@@ -24,7 +24,7 @@
 	"fig_cmap": "viridis_r",
 	"plot_kwargs": [{}, {}, {"marker": "s", "markersize": 5}]
     },
-    "warm_start": 0,
+    "warm_start": 1,
     "models": [
 	{
 	    "name": "adaboost1",
