@@ -13,6 +13,7 @@
     "ela_fig": {
 	"save_fig": 1,
 	"fig_size": [6, 5],
+	"fig_dpi": 100,
 	"fig_title": "Average XGBoost ELA with 50 trees, max_depth=6",
 	"fig_cmap": "viridis",
 	"plot_kwargs": [{"marker": "s", "markersize": 5}, {}, {}, {}, {}, {}]
@@ -20,6 +21,7 @@
     "rla_fig": {
 	"save_fig": 1,
 	"fig_size": [6, 5],
+	"fig_dpi": 100,
 	"fig_title": "Average XGBoost RLA with 50 trees, max_depth=6",
 	"fig_cmap": "viridis_r",
 	"plot_kwargs": [{"marker": "s", "markersize": 5}, {}, {}, {}, {}, {}]
