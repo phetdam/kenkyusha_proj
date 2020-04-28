@@ -5,6 +5,13 @@
 #
 # Changelog:
 #
+# 04-28-2020
+#
+# updated error messages in _check_json_config to refer to the newly created doc
+# file doc/config_format.md, which will be updated later. updated the function
+# _paint_xla_plots to send dpi argument to savefig, which is a new option that
+# is required in the ela_fig and rla_fig dicts controlling plot parameters.
+#
 # 04-10-2020
 #
 # made final check to warm start functionality.
@@ -186,15 +193,15 @@ def _check_json_config(cfg_data):
     for _ck in _XLA_FIG_KEYS:
         if _ck not in cfg_data[_ELA_FIG]:
             print(fill("{0}: error: {1} missing required key {2}. please read "
-                       "README.md for instructions on how to format average ELA"
-                       "/RLA comparison plot params"
+                       "doc/config_format.md for instructions on how to format "
+                       "average ELA/RLA comparison plot params"
                        .format(_PROGNAME, _ELA_FIG, _ck), width = 80),
                   file = stderr)
             return 1
         if _ck not in cfg_data[_RLA_FIG]:
             print(fill("{0}: error: {1} missing required key {2}. please read "
-                       "README.md for instructions on how to format average ELA"
-                       "/RLA comparison plot params"
+                       "doc/config_format.md for instructions on how to format "
+                       "average ELA/RLA comparison plot params"
                        .format(_PROGNAME, _RLA_FIG, _ck), width = 80),
                   file = stderr)
             return 1
@@ -440,7 +447,7 @@ def _paint_xla_plots(cfg_data, mdl_results):
     of Model_Results, based on the values set in the config data dict, paint
     and save an average ELA and/or average RLA comparison plot, or neither.
 
-    do not call externally. returns None
+    do not call externally. returns None.
 
     parameters:
 
@@ -468,9 +475,10 @@ def _paint_xla_plots(cfg_data, mdl_results):
                                cmap = ela_fig_opts[_FIGS_FIG_CMAP],
                                xlabel = "noise level",
                                plot_kwargs = ela_fig_opts[_FIGS_PLOT_KWARGS])
-        # save figure in results_dir using out_name and print message
+        # save figure using dpi from _FIGS_FIG_DPI in results_dir using out_name
+        # and print message upon completion
         ela_out = results_dir + "/" + out_name + "_" + _KEY_AVG_ELAS + ".png"
-        fig.savefig(ela_out)
+        fig.savefig(ela_out, dpi = ela_fig_opts[_FIGS_FIG_DPI])
         print("saved avg ELA plot to {0}".format(ela_out))
     elif save_ela_fig == 0: pass
     else:
@@ -489,9 +497,10 @@ def _paint_xla_plots(cfg_data, mdl_results):
                                cmap = rla_fig_opts[_FIGS_FIG_CMAP],
                                xlabel = "noise level",
                                plot_kwargs = rla_fig_opts[_FIGS_PLOT_KWARGS])
-        # save figure in results_dir using out_name and print message
+        # save figure using dpi from _FIGS_FIG_DPI in results_dir using out_name
+        # and print message upon completion
         rla_out = results_dir + "/" + out_name + "_" + _KEY_AVG_RLAS + ".png"
-        fig.savefig(rla_out)
+        fig.savefig(rla_out, dpi = rla_fig_opts[_FIGS_FIG_DPI])
         print("saved avg RLA plot to {0}".format(rla_out))
     # do nothing if 0
     elif save_rla_fig == 0: pass
