@@ -5,6 +5,10 @@
 #
 # Changelog:
 #
+# 04-28-2020
+#
+# added _FIGS_DPI key to control figure dpi. useful for increasing quality.
+#
 # 04-09-2020
 #
 # added _WARM_START key for indication on whether to run noisyeval.py using
@@ -43,10 +47,11 @@ _MODULE_NAME = "_config_keys"
 __all__ = ["_DATA_DIR", "_RESULTS_DIR", "_TEST_FRACTION", "_RANDOM_STATE",
            "_NOISE_KINDS", "_NOISE_LEVELS", "_DISP_ACCS", "_DISP_ELAS",
            "_DISP_RLAS", "_DISP_AVG_ELAS", "_DISP_AVG_RLAS", "_ELA_FIG",
-           "_RLA_FIG", "_FIGS_SAVE_FIG", "_FIGS_FIG_SIZE", "_FIGS_FIG_TITLE",
-           "_FIGS_FIG_CMAP", "_FIGS_PLOT_KWARGS", "_WARM_START", "_MODELS",
-           "_MODELS_NAME", "_MODELS_MODULE", "_MODELS_MODEL", "_MODELS_PARAMS",
-           "_MAIN_CONFIG_KEYS", "_XLA_FIG_KEYS", "_MODELS_KEYS"]
+           "_RLA_FIG", "_FIGS_SAVE_FIG", "_FIGS_FIG_SIZE", "_FIGS_FIG_DPI",
+           "_FIGS_FIG_TITLE", "_FIGS_FIG_CMAP", "_FIGS_PLOT_KWARGS",
+           "_WARM_START", "_MODELS", "_MODELS_NAME", "_MODELS_MODULE",
+           "_MODELS_MODEL", "_MODELS_PARAMS", "_MAIN_CONFIG_KEYS",
+           "_XLA_FIG_KEYS", "_MODELS_KEYS"]
 
 ### special constants ###
 # in .json config, specify directory of .csv data files to use
@@ -83,6 +88,8 @@ _RLA_FIG = "rla_fig"
 _FIGS_SAVE_FIG = "save_fig"
 # in .json config, array [width, height] (inches) for individual plot dimensions
 _FIGS_FIG_SIZE = "fig_size"
+# in .json config, int for individual plot dpi (default is 100 for matplotlib)
+_FIGS_FIG_DPI = "fig_dpi"
 # in .json config, gives title of a particular figure (str)
 _FIGS_FIG_TITLE = "fig_title"
 # in .json config gives color map to use when coloring lines in RLA/ELA plots
@@ -114,7 +121,7 @@ _MAIN_CONFIG_KEYS = [_DATA_DIR, _RESULTS_DIR, _TEST_FRACTION, _RANDOM_STATE,
                      _RLA_FIG, _WARM_START, _MODELS]
 
 # a list of the keys used for governing average ELA/RLA comparison plot params
-_XLA_FIG_KEYS = [_FIGS_SAVE_FIG, _FIGS_FIG_SIZE, _FIGS_FIG_TITLE,
+_XLA_FIG_KEYS = [_FIGS_SAVE_FIG, _FIGS_FIG_SIZE, _FIGS_FIG_DPI, _FIGS_FIG_TITLE,
                  _FIGS_FIG_CMAP, _FIGS_PLOT_KWARGS]
 
 # a list of the keys for a dict specifying model parameters
