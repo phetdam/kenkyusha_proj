@@ -13,9 +13,7 @@ Project folder for the BAC Research Team's study of boosting algorithm performan
 
 ## How to use
 
-**Remark.** The `--warm-start` option has not yet been implemented, so training times may be exceedingly long if you use any of the JSON files from `config`. Please use one of the test configurations in `test/config` instead.
-
-Simply `git clone` this repository onto your local machine and browse around. If you are interested in reproducing our results, please execute `noisyeval.py` with an appropriate JSON configuration file, say `foo.json`, either with `./noisyeval.py foo.json --warm-start` in the `bash` shell or by invoking `python noisyeval.py foo.json --warm-start`. The option `--warm-start` will instruct `noisyeval.py` to only compute results if there is no preexisting output pickle in the directory it writes results to.
+Simply `git clone` this repository onto your local machine and browse around. If you are interested in reproducing our results, please execute `noisyeval.py` with an appropriate JSON configuration file, say `foo.json`, either with `./noisyeval.py foo.json` in the `bash` shell or by invoking `python noisyeval.py foo.json`. By default, the `warm_start` field in the configuration files is set to 1 (true), so `noisyeval.py` will only compute results if there is no preexisting output pickle in the specified output directory.
 
 Please read `doc/config_format.md` for instructions on how to write your own JSON model configurations.
 
@@ -47,4 +45,4 @@ The `results` directory, as implied, contains the main experimental results from
 
 ### test
 
-The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains some sample evaluation results. Runtimes for the test configuration are much shorter than those used for to produce the results in the main `results` directory.
+The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains some sample evaluation results. Runtimes for the configurations in `test/config` are much shorter than those used to produce the results in the main `results` directory, i.e. in the order of minutes, not days.
