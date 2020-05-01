@@ -37,7 +37,7 @@ The `doc` directory contains relevant documentation. File `data_descs.md` contai
 
 ### kyulib
 
-The `kyulib` directory is a local Python package containing the [little] library code used for this project. Each function and class in each of the module files, as well as the module files themselves, have docstrings that can be read using the `help` command in the Python interpreter.
+The `kyulib` directory is a local Python package containing the [little] library code used for this project. Each function and class in the module files, as well as the module files themselves, have docstrings readable using the Python `help` command.
 
 ### results
 
@@ -47,4 +47,4 @@ The `results` directory, as implied, contains the main experimental results from
 
 ### test
 
-The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains sample evaluation results.
+The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains some sample evaluation results. Runtimes for the test configuration are much shorter than those used for to produce the results in the main `results` directory.
