@@ -2,7 +2,7 @@
 
 ![./banner.png](./banner.png)
 
-_last updated: 04-15-2020_  
+_last updated: 05-01-2020_  
 _file created: 03-23-2020_
 
 Project folder for the BAC Research Team's study of boosting algorithm performance on noisy data sets. This project was motivated by prior experiences with AdaBoost being defeated by label noise, which is a known shortcoming, and theoretical curiosity with regards to gradient boosting, the robustness of boosting to noise, XGBoost, and the XGBoost implementation.
@@ -23,28 +23,28 @@ Please read `doc/config_format.md` for instructions on how to write your own JSO
 
 Below are some brief descriptions of the directories in this repository.
 
- * **config**
+### config
 
 The `config` directory contains the JSON configuration files used to produce experimental results.
 
- * **data**
+### data
 
 The `data` directory, as implied, contains all the data used for this project. The raw CSV data files downloaded from OpenML are in `data/csv_raw`, where the [minimally] cleaned CSV data files used for model evaluation are in `data/csv_clean`.
 
- * **doc**
+### doc
 
 The `doc` directory contains relevant documentation. File `data_descs.md` contains descriptions for each of the 16 data sets we used in this project, and file `config_format.md` contains instructions on how to interpret and write your own JSON configuration files to feed to `noisyeval.py`, the script we used for evaluating the models.
 
- * **kyulib**
+### kyulib
 
 The `kyulib` directory is a local Python package containing the [little] library code used for this project. Each function and class in each of the module files, as well as the module files themselves, have docstrings that can be read using the `help` command in the Python interpreter.
 
-* **results**
+### results
 
 The `results` directory, as implied, contains the main experimental results from running `noisyeval.py` with the main configuration files in `config`. Output files are Python pickles, with PNG files for the average ELA/RLA plots.
 
 **Remark.** For info on ELA and RLA, see [this paper](https://doi.org/10.1016/j.neucom.2014.11.086) or read the docstrings for functions `ela` and `rla` in module `kyulib.metrics`.
 
-* **test**
+### test
 
 The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains sample evaluation results.
