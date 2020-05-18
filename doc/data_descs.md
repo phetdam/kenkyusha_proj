@@ -23,7 +23,7 @@ The Isolated Letter Speech Recognition data set. 7797 data points, 617 feature c
 
 ## MiceProtein
 
-The OpenML link [here](https://www.openml.org/d/40966). 
+Expression levels for 77 types of mice proteins measured in the cerebral cortex of 8 classes of mice. 1080 data points, 81 features, and 8 target classes. However, after removing rows with '?' entries and dropping ignored features, number of data points dropped to 552, and the number of features dropped to 77. OpenML link [here](https://www.openml.org/d/40966). 
 
 ## mushroom
 
