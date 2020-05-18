@@ -51,7 +51,7 @@ Spam email data set, from UCI. 4601 data points, 57 features, 2 target classes. 
 
 ## splice
 
-Primate splice-junction gene sequences. 3190 data points, 60 features, 3 target classes. OpenML link [here](https://www.openml.org/d/46).
+Primate splice-junction gene sequences. 3190 data points, 60 features, 3 target classes. However, after binarizing the features, which were all categorical, the number of features increased to 287 one-hot features. OpenML link [here](https://www.openml.org/d/46).
 
 ## steel-plates-fault
 
