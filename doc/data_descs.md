@@ -55,11 +55,19 @@ Primate splice-junction gene sequences. 3190 data points, 60 features, 3 target 
 
 ## steel-plates-fault
 
+Data set of steel plate faults. 1941 data points, 33 features, 2 target classes. OpenML link [here](https://www.openml.org/d/1504).
+
 ## vertebra-column
+
+Two-class verterbra column classification. 310 data points, 6 features, 2 target classes. OpenML link [here](https://www.openml.org/d/1524).
 
 ## wdbc
 
+The Breast Cancer Wisconsin (Diagnostic) data set. 569 data points, 30 features, 2 target classes. OpenML link [here](https://www.openml.org/d/1510).
+
 ## yeast
+
+Data set for predicting cellular localization sites, presumably of yeast-like bacteria as implied by the name, from UCI. Further information can be found at its UCI Machine Learning Repository page [here](http://archive.ics.uci.edu/ml/datasets/Yeast). 1484 data points, 8 features, 2 target classes. OpenML link [here](https://www.openml.org/d/181).
 
 Other data set descriptions to be added.
 
