@@ -31,7 +31,7 @@ Descriptions of hypothetical samples of 23 different species of Agaricus and Lep
 
 ## nursery
 
-Data set derived from a hierarchical decision model used for ranking nursery school applications. 12960 data points, 8 features, and 5 target classes. However, after binarizing the features, which were all categorical, the number of features increased to a total of 27 one-hot features. OpenML linke [here](https://www.openml.org/d/26).
+Data set derived from a hierarchical decision model used for ranking nursery school applications in the 1980s when there was excessive nursery school enrollment in Ljubljana, Slovenia. 12960 data points, 8 features, and 5 target classes. However, after binarizing the features, which were all categorical, the number of features increased to a total of 27 one-hot features. OpenML link [here](https://www.openml.org/d/26).
 
 ## optdigits
 
