@@ -27,7 +27,11 @@ Expression levels for 77 types of mice proteins measured in the cerebral cortex 
 
 ## mushroom
 
+Descriptions of hypothetical samples of 23 different species of Agaricus and Lepiota mushrooms. 8124 data points, 22 features, and 2 target classes. However, after binarizing the features, which were all categorical, the number of features increased to a total of 118 one-hot features. Note that the `stalk-root` feature, which was the only feature that contained missing values, had the presence of missing values coded as another one-hot feature. OpenML link [here](https://www.openml.org/d/24).
+
 ## nursery
+
+Data set derived from a hierarchical decision model used for ranking nursery school applications. 12960 data points, 8 features, and 5 target classes. However, after binarizing the features, which were all categorical, the number of features increased to a total of 27 one-hot features. OpenML linke [here](https://www.openml.org/d/26).
 
 ## optdigits
 
