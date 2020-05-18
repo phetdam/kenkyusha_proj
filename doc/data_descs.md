@@ -7,19 +7,19 @@ Brief descriptions and OpenML links to the 16 data sets we used to evaluate aver
 
 ## breast-w
 
-The Breast Cancer Wisconsin (Original) data set. 699 data points, 9 feature columns, and 2 target classes. However, after cleaning out input rows with missing values encoded as '?', number of remaining data points dropped to 683. OpenML link [here](https://www.openml.org/d/15).
+The Breast Cancer Wisconsin (Original) data set. 699 data points, 9 features, and 2 target classes. However, after cleaning out input rows with missing values encoded as '?', number of remaining data points dropped to 683. OpenML link [here](https://www.openml.org/d/15).
 
 ## diabetes
 
-The Pima Indians diabetes data set. 768 data points, 8 feature columns, and 2 target classes. OpenML link [here](https://www.openml.org/d/37).
+The Pima Indians diabetes data set. 768 data points, 8 features, and 2 target classes. OpenML link [here](https://www.openml.org/d/37).
 
 ## iris
 
-The classic iris data set. 150 data points, 4 feature columns, and 3 target classes. OpenML link [here](https://www.openml.org/d/61).
+The classic iris data set. 150 data points, 4 features, and 3 target classes. OpenML link [here](https://www.openml.org/d/61).
 
 ## isolet
 
-The Isolated Letter Speech Recognition data set. 7797 data points, 617 feature columns, and 26 target classes. OpenML link [here](https://www.openml.org/d/300).
+The Isolated Letter Speech Recognition data set. 7797 data points, 617 features, and 26 target classes. OpenML link [here](https://www.openml.org/d/300).
 
 ## MiceProtein
 
@@ -35,7 +35,7 @@ Data set derived from a hierarchical decision model used for ranking nursery sch
 
 ## optdigits
 
-Handwritten digits for optical recognition, from UCI. 5620 data points, 64 feature columns, 10 target classes. OpenML link [here](https://www.openml.org/d/28).
+Handwritten digits for optical recognition, from UCI. 5620 data points, 64 features, 10 target classes. OpenML link [here](https://www.openml.org/d/28).
 
 ## PhishingWebsites
 
@@ -43,11 +43,15 @@ Data set of features used for predicting whether a website is a phishing website
 
 ## semeion
 
-
+The Semeion Handwritten Digit Data Set. 1593 data points, 256 features, 10 target classes. OpenML link [here](https://www.openml.org/d/1501).
 
 ## spambase
 
+Spam email data set, from UCI. 4601 data points, 57 features, 2 target classes. OpenML link [here](https://www.openml.org/d/44).
+
 ## splice
+
+Primate splice-junction gene sequences. 3190 data points, 60 features, 3 target classes. OpenML link [here](https://www.openml.org/d/46).
 
 ## steel-plates-fault
 
