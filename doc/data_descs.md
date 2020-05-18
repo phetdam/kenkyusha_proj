@@ -39,7 +39,7 @@ Handwritten digits for optical recognition, from UCI. 5620 data points, 64 featu
 
 ## PhishingWebsites
 
-Data set of features used for predicting whether a website is a phishing website or not, from UCI. 11055 data points, 30 features, and 2 target classes. However, after binarizing the features, which were all categorical, the number of features increased to 68 one-hot features. OpenML link [here](https://www.openml.org/d/4534).
+Data set of features used for predicting whether a website is a phishing website or not, from UCI. 11055 data points, 30 features, and 2 target classes. However, after binarizing the features, which were all categorical, the number of features increased to 68 one-hot features. Information about the original features can be found in the document [here](https://archive.ics.uci.edu/ml/machine-learning-databases/00327/Phishing%20Websites%20Features.docx). OpenML link [here](https://www.openml.org/d/4534).
 
 ## semeion
 
