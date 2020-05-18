@@ -3,7 +3,7 @@
 _last updated: 05-18-2020_  
 _file created: 04-07-2020_
 
-Brief descriptions and OpenML links to the 16 data sets we used to evaluate average model performance.
+Brief descriptions and OpenML links to the 16 data sets we used to evaluate average model performance. Minimal cleaning was performed only when necessary to binarize categorical features and remove any missing values.
 
 ## breast-w
 
@@ -68,6 +68,4 @@ The Breast Cancer Wisconsin (Diagnostic) data set. 569 data points, 30 features,
 ## yeast
 
 Data set for predicting cellular localization sites, presumably of yeast-like bacteria as implied by the name, from UCI. Further information about the features and links to relvevant papers can be found at its UCI Machine Learning Repository page [here](http://archive.ics.uci.edu/ml/datasets/Yeast). 1484 data points, 8 features, 2 target classes. OpenML link [here](https://www.openml.org/d/181).
-
-Other data set descriptions to be added.
 
