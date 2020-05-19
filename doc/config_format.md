@@ -3,7 +3,9 @@
 _last updated: 05-18-2020_  
 _file created: 04-28-2020_
 
-A brief guide to interpreting and formatting the JSON evaluation config files for `noisyeval.py`.
+A brief guide to interpreting and formatting the JSON evaluation config files for `noisyeval.py`.  
+
+LaTeX rendering achieved using Alexander Rodin's hack, detailed [here](https://gist.github.com/a-rodin/fef3f543412d6e1ec5b6cf55bf197d7b).  
 
 **Remark.** Work in progress. Will be updated during the summer.
 
@@ -39,7 +41,7 @@ Controls the global random seed used by `noisy_eval.py` during the training proc
 
 ### noise_kinds
 
-Indicates to `noisy_eval.py` what kinds of noise to add to each copy of each data set specified by **data_dir**. If $$ k $$ types of noise are specified, then for each noise level, $$ k $$ different noisy data sets copies will be made. Must be assigned an array, where each element of the array is a valid string corresponding to a type of noise to introduce.  
+Indicates to `noisy_eval.py` what kinds of noise to add to each copy of each data set specified by **data_dir**. If <img src="https://render.githubusercontent.com/render/math?math=k"> types of noise are specified, then for each noise level, <img src="https://render.githubusercontent.com/render/math?math=k"> different noisy data sets copies will be made. Must be assigned an array, where each element of the array is a valid string corresponding to a type of noise to introduce.  
 
 So far, only `"label"` is a valid, supported noise type.  See also [**noise_levels**](#noise_levels).
 
