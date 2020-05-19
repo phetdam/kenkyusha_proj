@@ -17,23 +17,33 @@ The configuration files used by `noisy_eval.py` are standard JSON files with spe
 
 Indicates to `noisy_eval.py` where the data files for model training are, all of which will be used. Must be assigned a string value interpretable as a valid directory name containing only CSV files that can be read by `pandas.read_csv`. Note that if there are non-CSV files in the directory, `noisy_eval.py` will ignore them and issue a warning.  
 
-Example: `"data_dir": "./data/csv_clean"`
+**Example:** `"data_dir": "./data/csv_clean",`
 
 ### results_dir
 
-Indicates to `noisy_eval.py` where to write computation results, including the final model result `pickle` and any associated RLA/ELA plots. See also [**ela_fig**](#ela_fig) and [**rla_fig**](#rla_fig). Must be assigned a string value interpretable as a valid directory name.
+Indicates to `noisy_eval.py` where to write computation results, including the final model result `pickle` and any associated RLA/ELA plots. See also [**ela_fig**](#ela_fig) and [**rla_fig**](#rla_fig). Must be assigned a string value interpretable as a valid directory name.  
+
+**Example:** `"results_dir": "./results",`
 
 ### test_fraction
 
-Indicates to `noisy_eval.py`, for each data set in the directory specified by **data_dir**, what fraction of the data to use as the validation data that metrics will be computed on. Must be assigned a float in the range of (0, 1). See also [**random_state**](#random_state).
+Indicates to `noisy_eval.py`, for each data set in the directory specified by **data_dir**, what fraction of the data to use as the validation data that metrics will be computed on. Must be assigned a float in the range of (0, 1). See also [**random_state**](#random_state).  
+
+**Example:** `"test_fraction": 0.2,`
 
 ### random_state
 
-Controls the global random seed used by `noisy_eval.py` during the training proces, controlling both the training/validation data split, random seed for any model that has stochastic fitting behavior, and the way that noise applied to a data set is generated. Note that the underlying PRNG is the `numpy` PRNG, so the behavior is not thread-safe. Must be assigned a nonnegative integer, which is directly passed to `numpy.random.seed`. See also [**noise_kinds**](#noise_kinds).
+Controls the global random seed used by `noisy_eval.py` during the training proces, controlling both the training/validation data split, random seed for any model that has stochastic fitting behavior, and the way that noise applied to a data set is generated. Note that the underlying PRNG is the `numpy` PRNG, so the behavior is not thread-safe. Must be assigned a nonnegative integer, which is directly passed to `numpy.random.seed`. See also [**noise_kinds**](#noise_kinds).  
+
+**Example:** `"random_state": 7,`
 
 ### noise_kinds
 
-Indicates to `noisy_eval.py` what kinds of noise to add to each copy of each data set specified by **data_dir**. If $ k $ types of noise are specified, then for each noise level, $ k $ different noisy data sets copies will be made. Must be assigned an array, where each element of the array is a valid string corresponding to a type of noise to introduce. So far, only `"label"` is a supported noise value.  See also [**noise_levels**](#noise_levels).
+Indicates to `noisy_eval.py` what kinds of noise to add to each copy of each data set specified by **data_dir**. If $ k $ types of noise are specified, then for each noise level, $ k $ different noisy data sets copies will be made. Must be assigned an array, where each element of the array is a valid string corresponding to a type of noise to introduce.  
+
+So far, only `"label"` is a valid, supported noise type.  See also [**noise_levels**](#noise_levels).
+
+**Example:** `"noise_kinds": ["label"],`
 
 ### noise_levels
 
