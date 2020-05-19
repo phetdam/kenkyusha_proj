@@ -5,7 +5,7 @@ _file created: 04-28-2020_
 
 A brief guide to interpreting and formatting the JSON evaluation config files for `noisyeval.py`.  
 
-LaTeX rendering achieved using Alexander Rodin's hack, detailed [here](https://gist.github.com/a-rodin/fef3f543412d6e1ec5b6cf55bf197d7b).  
+LaTeX rendering achieved using Alexander Rodin's workaround, detailed [here](https://gist.github.com/a-rodin/fef3f543412d6e1ec5b6cf55bf197d7b).  
 
 **Remark.** Work in progress. Will be updated during the summer.
 
