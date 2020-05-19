@@ -61,7 +61,25 @@ Indicates to `noisy_eval.py` that after computation, accuracy matrices for each 
 
 ### disp_elas, disp_rlas
 
-Play similar toles to **disp_accs**, except the matrices are of ELA and RLA.
+Play similar roles to **disp_accs**, except the matrices are of ELA and RLA, indexed in the same way as described above in [**disp_accs**](#disp_accs). See the paper [here](https://doi.org/10.1016/j.neucom.2014.11.086) for a description of what the two metrics are. Must be assigned either 0 for false, 1 for true.  
+
+**Example:**
+
+```json
+"disp_elas": 0,
+"disp_rlas": 0,
+```
+
+### disp_avg_elas, disp_avg_rlas
+
+Play similar roles to **disp_elas** and **disp_rlas** except with respect to whether or not row vectors of data set macro averages of ELA and RLA will be sent to `stdout`. Must be assigned either 0 for false, 1 for true.
+
+**Example:**
+
+```json
+"disp_avg_elas": 1,
+"disp_avg_rlas": 1,
+```
 
 ## An example
 
