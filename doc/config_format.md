@@ -49,7 +49,19 @@ So far, only `"label"` is a valid, supported noise type.  See also [**noise_leve
 
 ### noise_levels
 
-Indicates to `noisy_eval.py` the noise level to assign for each of the noisy copies specified by **noise_kinds** made for each data set specified by **data_dir**. Must be assigned an array, where each element of the array is a float in (0, 1). See also [**noise_kinds**](#noise_kinds) above.
+Indicates to `noisy_eval.py` the noise level to assign for each of the noisy copies specified by **noise_kinds** made for each data set specified by **data_dir**. Must be assigned an array, where each element of the array is a float in (0, 1). See also [**noise_kinds**](#noise_kinds) above.  
+
+**Example:** `"noise_levels": [0.1, 0.2, 0.3, 0.6, 0.9],`
+
+### disp_accs
+
+Indicates to `noisy_eval.py` that after computation, accuracy matrices for each model should be printed to `stdout`. The matrices are indexed by data set name along the rows and by noise level along the columns, and if there are <img src="https://render.githubusercontent.com/render/math?math=k"> noise kinds specified in **noise_kinds**, then there will be <img src="https://render.githubusercontent.com/render/math?math=k"> accuracy matrices for each model. Must be assigned either 0 for false, 1 for true.
+
+**Example:** `"disp_accs": 0,`
+
+### disp_elas, disp_rlas
+
+Play similar toles to **disp_accs**, except the matrices are of ELA and RLA.
 
 ## An example
 
