@@ -7,8 +7,6 @@ A brief guide to interpreting and formatting the JSON evaluation config files fo
 
 LaTeX rendering achieved using Alexander Rodin's workaround, detailed [here](https://gist.github.com/a-rodin/fef3f543412d6e1ec5b6cf55bf197d7b).  
 
-**Remark.** Work in progress. Will be updated during the summer.
-
 ## Overview
 
 The configuration files used by `noisy_eval.py` are standard JSON files with specific formatting conventions that are specify different configuration parameters to `noisy_eval.py` , for example where to write results, the global random seed to use, what kinds of noise to add, what quantities to display to `stdout`, etc. Each configuration file consists of a single JSON object containing other JSON objects, arrays, and strings. There are several keys associated with the main JSON object which are required to be present; we detail their required values in the section below.
