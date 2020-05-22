@@ -113,8 +113,9 @@ Play similar roles to **disp_elas** and **disp_rlas** except with respect to whe
 
 Indicates options to be used when painting comparison plots of per-model average ELA/RLA versus noise level across data sets. Must be assigned a JSON object that contains several required keys which are described below.
 
-* #### save_fig  
-add filler text here
+* **save_fig**
+
+  add filler text here does this change the list level?
 
 ### warm_start
 
