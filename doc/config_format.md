@@ -168,7 +168,57 @@ Specifies the models to evaluate on the data sets specified by **data_dir** over
 
   A name to uniquely identify the model, which will also be the legend label assigned to the line plotted in the average ELA/RLA comparison figures, if they are to be saved. Must be assigned a string; LaTeX can be included in the string.
 
-See also [**data_dir**](#data_dir), [**noise_kinds**](#noise_kinds), [**noise_levels**](#noise_levels).
+* **module**
+
+  Specifies the Python module the model class belongs to. Must be assigned a string.
+
+* **model**
+
+  Specifies the class name of the desired model. Note that only classes that implement an `sklearn`-like interface can be used with `noisy_eval.py`, as the computation methods assume that every model implements the instance methoeds `fit`, `score`, and `predict`. Must be assigned a string.
+
+* **params**
+
+  Specifies any hyperparameters used for creating an `sklearn`-like model class instance. Note that in the case that a hyperparameter is another `sklearn`-like model instance, one can specify this case by assigning to a string key an object with keys **module**, **model**, and **params**. `noisy_eval.py` will be able to interpret this JSON object as a request for a model instance as a hyperparameter. Must be assigned a JSON object, where each key/value pair corresponds to a named hyperparameter and its associated value. Please see the example below.
+
+See also [**data_dir**](#data_dir), [**noise_kinds**](#noise_kinds), [**noise_levels**](#noise_levels) for configuration of data files, noise types, and noise levels.
+
+**Example:**
+
+Note the syntax used for the `AdaBoostClassifier`. The `base_estimator` hyperparameter requires an `sklearn` model instance, which cannot be stored in a JSON file. However, `noisy_eval.py` will interpret the JSON object assigned to `base_estimator` as specification for an `sklearn`-like class instance, create an instance of the `DecisionTreeClassifier` from `sklearn.tree` with the specified values for `criterion`, `max_depth`, and `random_state`, and return that as a hyperparameter to be used for creating an instance of the `sklearn.ensemble.AdaBoostClassifier`.
+
+```json
+"models": [
+    {
+        "name": "adaboost6",
+        "module": "sklearn.ensemble",
+        "model": "AdaBoostClassifier",
+        "params": {
+            "base_estimator": {
+                "module": "sklearn.tree",
+                "model": "DecisionTreeClassifier",
+                "params": {
+                    "criterion": "entropy",
+                    "max_depth": 6,
+                    "random_state": 7
+                }
+            },
+            "n_estimators": 50,
+            "random_state": 7
+        }
+    },
+    {
+        "name": "gboost6",
+        "module": "sklearn.ensemble",
+        "model": "GradientBoostingClassifier",
+        "params": {
+            "n_estimators": 50,
+            "max_depth": 6,
+            "learning_rate": 0.1,
+            "random_state": 7
+        }
+    }
+]
+```
 
 ## An example
 
