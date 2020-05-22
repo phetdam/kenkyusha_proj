@@ -152,7 +152,7 @@ Indicates options to be used when painting comparison plots of per-model average
 
 ### warm_start
 
-Indicates to `noisy_eval.py` whether to perform a warm start or not. Given a configuration file `foo.json`, if the `pickle` file `foo.pickle` exists in the results directory specified by **results_dir**, warm starting is defined as reusing the results of `foo.pickle` when painting the plots with the options specified in **ela_fig** and **rla_fig**. The benefit of warm starting is that after computing results, one can modify plotting options in **ela_fig** and **rla_fig** to change plot aesthetics without having to recompute all the results again. Must be assigned either 1 to warm start, 0 to always cold start. It is recommended to set **warm_start** to 1 and simply delete the old `pickle` file if new results need to be computed. See [**ela_fig, rla_fig**](#ela_fig, rla_fig) for plotting config.
+Indicates to `noisy_eval.py` whether to perform a warm start or not. Given a configuration file `foo.json`, if the `pickle` file `foo.pickle` exists in the results directory specified by **results_dir**, warm starting is defined as reusing the results of `foo.pickle` when painting the plots with the options specified in **ela_fig** and **rla_fig**. The benefit of warm starting is that after computing results, one can modify plotting options in **ela_fig** and **rla_fig** to change plot aesthetics without having to recompute all the results again. Must be assigned either 1 to warm start, 0 to always cold start. It is recommended to set **warm_start** to 1 and simply delete the old `pickle` file if new results need to be computed.
 
 **Example:**
 
@@ -162,7 +162,13 @@ Indicates to `noisy_eval.py` whether to perform a warm start or not. Given a con
 
 ### models
 
-Specifies the models to evaluate on the data sets specified by **data_dir**
+Specifies the models to evaluate on the data sets specified by **data_dir** over the noise kinds and levels specified by **noise_kinds** and **noise_levels**. Must be an array of objects, where each object contains several required keys as specified below.
+
+* **name**
+
+  A name to uniquely identify the model, which will also be the legend label assigned to the line plotted in the average ELA/RLA comparison figures, if they are to be saved. Must be assigned a string; LaTeX can be included in the string.
+
+See also [**data_dir**](#data_dir), [**noise_kinds**](#noise_kinds), [**noise_levels**](#noise_levels).
 
 ## An example
 
