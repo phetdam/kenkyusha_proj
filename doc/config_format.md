@@ -174,7 +174,7 @@ Specifies the models to evaluate on the data sets specified by **data_dir** over
 
 * **model**
 
-  Specifies the class name of the desired model. Note that only classes that implement an `sklearn`-like interface can be used with `noisy_eval.py`, as the computation methods assume that every model implements the instance methoeds `fit`, `score`, and `predict`. Must be assigned a string.
+  Specifies the class name of the desired model, excluding the module name. Note that only classes that implement an `sklearn`-like interface can be used with `noisy_eval.py`, as the computation methods assume that every model implements the instance methoeds `fit`, `score`, and `predict`. Must be assigned a string.
 
 * **params**
 
@@ -184,7 +184,7 @@ See also [**data_dir**](#data_dir), [**noise_kinds**](#noise_kinds), [**noise_le
 
 **Example:**
 
-Note the syntax used for the `AdaBoostClassifier`. The `base_estimator` hyperparameter requires an `sklearn` model instance, which cannot be stored in a JSON file. However, `noisy_eval.py` will interpret the JSON object assigned to `base_estimator` as specification for an `sklearn`-like class instance, create an instance of the `DecisionTreeClassifier` from `sklearn.tree` with the specified values for `criterion`, `max_depth`, and `random_state`, and return that as a hyperparameter to be used for creating an instance of the `sklearn.ensemble.AdaBoostClassifier`.
+Note the syntax used for the `AdaBoostClassifier`. The `base_estimator` hyperparameter requires an `sklearn` model instance, which cannot be stored in a JSON file. However, since `base_estimator` has been assigned a JSON object, `noisy_eval.py` knows to interprets the JSON object as specification for an `sklearn`-like class instance. In this case, an instance of the `DecisionTreeClassifier` from `sklearn.tree` with the specified values for `criterion`, `max_depth`, and `random_state` will be created and passed to `base_estimator` upon creation of an `sklearn.ensemble.AdaBoostClassifier` instance.
 
 ```json
 "models": [
