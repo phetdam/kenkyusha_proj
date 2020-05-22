@@ -220,9 +220,9 @@ Note the syntax used for the `AdaBoostClassifier`. The `base_estimator` hyperpar
 ]
 ```
 
-## An example
+## A full example
 
-The following JSON object, when placed into a JSON file, is a valid configuration file.
+The following JSON object, when placed into a JSON file, is a valid configuration file. You may wish to copy and paste the example below and edit the fields as necessary to facilitate the writing of your own configuration files.
 
 ```json
 {
