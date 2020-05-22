@@ -119,7 +119,7 @@ Indicates options to be used when painting comparison plots of per-model average
 
 * **fig_size**
 
-  Specifies the size in inches of the figure if **save_fig** has value 1. Must be an array with two positive integer elements.
+  Specifies the size in inches of the figure if **save_fig** has value 1. Must be an array of two positive integers.
 
 * **fig_dpi**
 
@@ -152,7 +152,10 @@ Indicates options to be used when painting comparison plots of per-model average
 
 ### warm_start
 
+Indicates to `noisy_eval.py` whether to perform a warm start or not. Given a configuration file `foo.json`, if the `pickle` file `foo.pickle` exists in the results directory specified by **results_dir**, warm starting is defined as reusing the results of `foo.pickle` when painting the plots with the options specified in **ela_fig** and **rla_fig**. The benefit of warm starting is that after computing results, one can modify plotting options in **ela_fig** and **rla_fig** to change plot aesthetics without having to recompute all the results again. Must be assigned either 1 to warm start, 0 to always cold start. It is recommended to set **warm_start** to 1 and simply delete the old `pickle` file if new results need to be computed.
+
 ### models
+
 
 ## An example
 
