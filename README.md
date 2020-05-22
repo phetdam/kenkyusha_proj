@@ -7,6 +7,8 @@ Project folder for the BAC Research Team's study of boosting algorithm performan
 
 **Remark.** Evaluation times stored in the output pickles should be taken with a grain of salt. The machine running evaluations suffered mechanical damage to its cooling fan and has since exhibited noticeably slower and more erratic performance.
 
+Contributors: Derek Huang
+
 ## How to use
 
 Simply `git clone` this repository onto your local machine and browse around. If you are interested in reproducing our results, please execute `noisyeval.py` with an appropriate JSON configuration file, say `foo.json`, either with `./noisyeval.py foo.json` in the `bash` shell or by invoking `python noisyeval.py foo.json`. By default, the `warm_start` field in the configuration files is set to 1 (true), so `noisyeval.py` will only compute results if there is no preexisting output pickle in the specified output directory.
