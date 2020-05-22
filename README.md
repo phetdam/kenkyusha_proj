@@ -41,6 +41,10 @@ The `results` directory, as implied, contains the main experimental results from
 
 **Remark.** For info on ELA and RLA, see [this paper](https://doi.org/10.1016/j.neucom.2014.11.086) or read the docstrings for functions `ela` and `rla` in module `kyulib.metrics`.
 
+### slides
+
+The `slides` directory contains a PDF set of slides which provide some background on gradient boosting and XGBoost, explain our experimental setup and results, and state our conclusions and some future considerations. An abridged version, not included here,  was presented to fellow Spring 2020 BAC Advanced Team members.
+
 ### test
 
 The `test` directory contains a copy of a few of the data sets from `data` and some sample configurations, used during project development. `test/config` contains JSON configuration files, `test/data` contains the sample data sets, and `test/results` contains some sample evaluation results. Runtimes for the configurations in `test/config` are much shorter than those used to produce the results in the main `results` directory, i.e. in the order of minutes, not days.
