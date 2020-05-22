@@ -117,7 +117,7 @@ Indicates options to be used when painting comparison plots of per-model average
 
   Indicates to `noisy_eval.py` whether or not the figure should be painted and saved. Must be assigned either 1 for true to paint and save the image as a PNG file, or 0 to not produce the image.
 
-* **fig_size**  
+* **fig_size**
 
   Specifies the size in inches of the figure if **save_fig** has value 1. Must be an array with two positive integer elements.
 
@@ -131,7 +131,11 @@ Indicates options to be used when painting comparison plots of per-model average
 
 * **fig_cmap**
 
-  Specifies the color map used to paint the lines in the figure if **save_fig** has value 1. Must be a string that is a valid color map from `matplotlib.cm`.
+  Specifies the color map used to paint the lines in the figure if **save_fig** has value 1. Must be a string that is a valid color map from `matplotlib.cm`. A good standard color map choice is `"viridis"`.
+
+* **plot_kwargs**
+
+  Specifies per-line keyword arguments to pass to `matplotlib.axes.Axes.plot` if **save_fig** has value 1. Must be an array, either empty if no keyward arguments are to be passed, or containing the same number of JSON objects as the number of models present in the configuration file. See [**models**](#models) for details on specifying models in a configuration file. If no keyword arguments are to be specified for a line/model, an empty JSON object can be used, else write valid key/value pairs in the JSOn object that are interpretable by `matplotlib.axes.Axes.plot`.
 
 **Example:**
 
