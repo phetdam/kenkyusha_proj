@@ -2,12 +2,10 @@
 
 ![./banner.png](./banner.png)
 
-_last updated: 05-01-2020_  
+_last updated: 05-22-2020_  
 _file created: 03-23-2020_
 
 Project folder for the BAC Research Team's study of boosting algorithm performance on noisy data sets. This project was motivated by prior experiences with AdaBoost being defeated by label noise, which is a known shortcoming, and theoretical curiosity with regards to gradient boosting, the robustness of boosting to noise, XGBoost, and the XGBoost implementation.
-
-**Remark.** This directory is subject to change at any notice due to its state of active development.
 
 **Remark.** Evaluation times stored in the output pickles should be taken with a grain of salt. The machine running evaluations suffered mechanical damage to its cooling fan and has since exhibited noticeably slower and more erratic performance.
 
