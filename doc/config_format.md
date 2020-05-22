@@ -1,6 +1,6 @@
 # Formatting config files
 
-_last updated: 05-18-2020_  
+_last updated: 05-22-2020_  
 _file created: 04-28-2020_
 
 A brief guide to interpreting and formatting the JSON evaluation config files for `noisyeval.py`.  
@@ -108,6 +108,18 @@ Play similar roles to **disp_elas** and **disp_rlas** except with respect to whe
 "disp_avg_elas": 1,
 "disp_avg_rlas": 1,
 ```
+
+### ela_fig, rla_fig
+
+Indicates options to be used when painting comparison plots of per-model average ELA/RLA versus noise level across data sets. Must be assigned a JSON object that contains several required keys which are described below.
+
+* save_fig
+
+add filler text here
+
+### warm_start
+
+### models
 
 ## An example
 
