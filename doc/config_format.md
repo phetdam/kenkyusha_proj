@@ -115,7 +115,7 @@ Indicates options to be used when painting comparison plots of per-model average
 
 * save_fig
 
-add filler text here
+  add filler text here
 
 ### warm_start
 
