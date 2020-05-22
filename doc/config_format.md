@@ -115,7 +115,36 @@ Indicates options to be used when painting comparison plots of per-model average
 
 * **save_fig**
 
-  add filler text here does this change the list level?
+  Indicates to `noisy_eval.py` whether or not the figure should be painted and saved. Must be assigned either 1 for true to paint and save the image as a PNG file, or 0 to not produce the image.
+
+* **fig_size**  
+
+  Specifies the size in inches of the figure if **save_fig** has value 1. Must be an array with two positive integer elements.
+
+* **fig_dpi**
+
+  Specifies the DPI of the figure if **save_fig** has value 1. Must be a positive integer. The typical value is 100.
+
+* **fig_title**
+
+  Specifies the figure's title if **save_fig** has value 1. Must be a string; can include LaTeX in the string.
+
+* **fig_cmap**
+
+  Specifies the color map used to paint the lines in the figure if **save_fig** has value 1. Must be a string that is a valid color map from `matplotlib.cm`.
+
+**Example:**
+
+```json
+"ela_fig": {
+    "save_fig": 1,
+    "fig_size": [6, 5],
+    "fig_dpi": 100,
+    "fig_title": "Average ELA with 50 trees, max_depth=6",
+    "fig_cmap": "viridis",
+    "plot_kwargs": [{}, {}, {"marker": "s", "markersize": 5}]
+},
+```
 
 ### warm_start
 
