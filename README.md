@@ -1,7 +1,5 @@
 # BAC Research Team Spring 2020: Boosting with Noise
 
-![./banner.png](./banner.png)
-
 _last updated: 05-22-2020_  
 _file created: 03-23-2020_
 
