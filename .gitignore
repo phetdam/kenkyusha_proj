@@ -1,0 +1,10 @@
+**/__pycache__
+# ignore large (HQ) images from being tracking
+**/*_hq.png
+# ignore XGBoost test configs
+test/config/xg_*.json
+# ignore non-stump pickles and PNGs in test results
+test/results/*boost*.pickle
+test/results/logistic.pickle
+test/results/xg_*.pickle
+test/results/xg_*.png
