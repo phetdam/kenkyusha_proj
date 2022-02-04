@@ -9,10 +9,11 @@ BAC Research Team Spring 2020: Boosting with Noise
 Project folder for the BAC Research Team's study of boosting algorithm
 performance on noisy data sets.
 
-This project was motivated by prior experiences with AdaBoost being defeated by
-label noise, a known shortcoming, and theoretical curiosity with regards to
-gradient boosting, the robustness of boosting to noise, XGBoost, and the
-XGBoost implementation.
+This project was originally motivated by prior experiences with AdaBoost being
+defeated by label noise, which is a known shortcoming. Theoretical curiosity
+with regards to gradient boosting, the robustness of boosting to noise,
+XGBoost, and the XGBoost implementation itself, also contributed significantly
+to the project's direction.
 
    **Remark.** Evaluation times stored in the output pickles should be taken
    with a grain of salt. The machine running evaluations suffered mechanical
@@ -76,9 +77,8 @@ Below are some brief descriptions of the directories in this repository.
 
 ``test``
    Contains a copy of a few data sets from ``data`` and some sample
-   configurations used during project development. ``test/config`` contains
-   JSON config files, ``test/data`` contains the sample data sets, and
-   ``test/results`` has some sample evaluation results. Runtimes for the
-   configs in ``test/config`` are much shorter than those used to produce the
-   results in the main ``results`` directory, i.e. completing in the order of
-   minutes, not days.
+   configurations used during project development. ``test/config`` has JSON
+   config files, ``test/data`` has the sample data sets, and ``test/results``
+   has sample evaluation results. Runtimes for the configs in ``test/config``
+   are much shorter than those used to produce the results in ``results``, i.e.
+   completing in the order of minutes, not days.
