@@ -153,8 +153,8 @@ yeast
 
 Data set for predicting cellular localization sites, presumably of yeast-like
 bacteria as implied by the name, from UCI. Further info on the features and
-relevant paper links can be found on its UCI Machine Learning Repository page
-here__. 1484 data points, 8 features, 2 target classes. OpenML link here__.
+relevant paper links can be found on its UCI homepage here__. 1484 data points,
+8 features, 2 target classes. OpenML link here__.
 
 .. __: http://archive.ics.uci.edu/ml/datasets/Yeast
 
