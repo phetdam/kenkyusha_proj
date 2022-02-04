@@ -7,15 +7,16 @@ BAC Research Team Spring 2020: Boosting with Noise
 ==================================================
 
 Project folder for the BAC Research Team's study of boosting algorithm
-performance on noisy data sets. This project was motivated by prior experiences
-with AdaBoost being defeated by label noise, which is a known shortcoming, and
-theoretical curiosity with regards to gradient boosting, the robustness of
-boosting to noise, XGBoost, and the XGBoost implementation.
+performance on noisy data sets.
+
+This project was motivated by prior experiences with AdaBoost being defeated by
+label noise, a known shortcoming, and theoretical curiosity with regards to
+gradient boosting, the robustness of boosting to noise, XGBoost, and the
+XGBoost implementation.
 
    **Remark.** Evaluation times stored in the output pickles should be taken
    with a grain of salt. The machine running evaluations suffered mechanical
-   damage to its cooling fan and has since exhibited noticeably slower and
-   more erratic performance.
+   damage to its cooling fan and has since become much slower.
 
 How to use
 ----------
@@ -26,8 +27,8 @@ If you are interested in reproducing our results, please execute
 ``foo.json``, either with ``./noisyeval.py foo.json`` in the ``bash`` shell or
 by invoking ``python noisyeval.py foo.json``. By default, the ``warm_start``
 field in the configuration files is set to 1 (true), so ``noisyeval.py`` will
-only compute results if there is no preexisting output pickle in the specified
-output directory.
+only compute results if there is no preexisting output pickle hanging out in
+the specified output directory.
 
 Please read ``doc/config_format.md`` for instructions on how to write your own
 JSON model configurations.
@@ -63,7 +64,7 @@ Below are some brief descriptions of the directories in this repository.
    with PNG files for the average ELA/RLA plots.
 
    **Remark.** For info on ELA and RLA, see `this paper`__ or read the
-   docstrings for functions ``ela`` and ``rla`` in module ``kyulib.metrics``.
+   docstrings for ``ela`` and ``rla`` in ``kyulib.metrics``.
 
 .. __: https://doi.org/10.1016/j.neucom.2014.11.086
 
@@ -74,10 +75,10 @@ Below are some brief descriptions of the directories in this repository.
    included here, was presented to fellow Spring 2020 BAC Advanced Team members.
 
 ``test``
-   Contains a copy of a few of the data sets from ``data`` and some sample
-   configurations, used during project development. ``test/config`` contains
-   JSON configuration files, ``test/data`` contains the sample data sets, and
-   ``test/results`` contains some sample evaluation results. Runtimes for the
-   configurations in ``test/config`` are much shorter than those used to
-   produce the results in the main ``results`` directory, i.e. in the order of
+   Contains a copy of a few data sets from ``data`` and some sample
+   configurations used during project development. ``test/config`` contains
+   JSON config files, ``test/data`` contains the sample data sets, and
+   ``test/results`` has some sample evaluation results. Runtimes for the
+   configs in ``test/config`` are much shorter than those used to produce the
+   results in the main ``results`` directory, i.e. completing in the order of
    minutes, not days.
