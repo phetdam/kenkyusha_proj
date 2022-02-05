@@ -169,7 +169,7 @@ assigned either 0 for false, 1 for true.
 
 Play similar roles to `disp_elas, disp_rlas`_ except with respect to whether or
 not row vectors of data set macro averages of ELA and RLA will be sent to
-``stdout``. Must be assigned either 0 for false, 1 for true.
+``stdout``. Both keys must be assigned either 0 for false, 1 for true.
 
 **Example:**
 
