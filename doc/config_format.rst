@@ -152,8 +152,8 @@ true.
 
 Play similar roles to `disp_accs`_, except the matrices are of ELA and RLA,
 indexed in the same way as described above in `disp_accs`_. See the paper
-here__ for a description of what the two metrics are. Must be assigned either 0
-for false, 1 for true.  
+here__ for a description of what the two metrics are. Both keys must be
+assigned either 0 for false, 1 for true.  
 
 .. __: https://doi.org/10.1016/j.neucom.2014.11.086
 
