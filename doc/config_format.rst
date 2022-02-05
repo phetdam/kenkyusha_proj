@@ -28,14 +28,14 @@ LaTeX rendered [#]_ using Alexander Rodin's hacky workaround, detailed here__.
 Overview
 --------
 
-The configuration files used by ``noisy_eval.py`` are standard JSON files with
-specific formatting conventions that are specify different configuration
-parameters to ``noisy_eval.py``, for example where to write results, the global
-random seed to use, what kinds of noise to add, what quantities to display to
-``stdout``, etc. Each configuration file consists of a single JSON object
-containing other JSON objects, arrays, and strings. There are several keys
-associated with the main JSON object which are required to be present; we
-detail their required values in the section below.
+The config files used by ``noisy_eval.py`` are standard JSON files with
+specific formatting conventions that are specify different config parameters
+to ``noisy_eval.py``, for example where to write results, the global random
+seed to use, what kinds of noise to add, what quantities to display to
+``stdout``, etc. Each config file consists of a single JSON object containing
+other JSON objects, arrays, and strings. There are several keys associated with
+the main JSON object which are required to be present; we detail their required
+values in the section below.
 
 Required keys
 -------------
@@ -47,7 +47,7 @@ Indicates to ``noisy_eval.py`` where the data files for model training are,
 all of which will be used. Must be assigned a string value interpretable as a
 valid directory name containing only CSV files that can be read by
 ``pandas.read_csv``. Note that if there are non-CSV files in the directory,
-``noisy_eval.py`` will ignore them and print a warning to ``stderr``.
+``noisy_eval.py`` will ignore these files and print a warning to ``stderr``.
 
 **Example:**
 
@@ -90,9 +90,10 @@ Controls the global random seed used by ``noisy_eval.py`` during the training
 process, controlling both the training/validation data split, random seed for
 any model that has stochastic fitting behavior, and the way that noise applied
 to a data set is generated. Note that the underlying PRNG is the NumPy PRNG, so
-the behavior is not thread-safe. Must be assigned a nonnegative integer, which
-is directly passed to ``numpy.random.seed``. See also `noise_kinds`_, the
-following section.
+the behavior is not thread-safe.
+
+Must be assigned a nonnegative integer, which is directly passed to
+``numpy.random.seed``. See also `noise_kinds`_, the following section.
 
 **Example:**
 
@@ -107,10 +108,8 @@ Indicates to ``noisy_eval.py`` what kinds of noise to add to each copy of each
 data set specified by `data_dir`_. If ``k`` types of noise are specified, then
 for each noise level, ``k`` different noisy data sets copies will be made. Must
 be assigned an array, where each element of the array is a valid string
-corresponding to a type of noise to introduce to the data.
-
-So far, only ``"label"`` is a valid, supported noise type. See also
-`noise_levels`_.
+corresponding to a type of noise to introduce to the data. So far, only
+``"label"`` is supported. See also `noise_levels`_.
 
 **Example:**
 
@@ -202,7 +201,8 @@ object that contains several required keys which are described below.
 ``fig_title``
    Specifies the figure's title if ``save_fig`` has value 1. Must be a string.
    LaTeX can be included in the string between dollar signs, i.e. ``$``, as
-   long as ``\`` is properly escaped, i.e. with ``\\``.
+   long as ``\`` is properly escaped, i.e. with ``\\``. Otherwise, your LaTeX
+   won't render properly.
 
 ``fig_cmap``
    Specifies the color map used to paint the lines in the figure if ``save_fig``
@@ -265,7 +265,7 @@ several required keys as specified below.
    assigned to the line plotted in the average ELA/RLA comparison figures, if
    they are to be saved. Must be assigned a string. Like with ``fig_title`` in
    `ela_fig, rla_fig`_, LaTeX can be included in the string between ``$`` so
-   long as ``\`` is properly escaped as ``\\``.
+   long as ``\`` is properly escaped as ``\\`` to preserve LaTeX commands.
 
 ``module``
    Specifies the Python module the model class belongs to. Must be assigned a
@@ -276,7 +276,7 @@ several required keys as specified below.
    Note that only classes that implement an ``sklearn``-like interface can be
    used with ``noisy_eval.py``, as the computation methods assume that every
    model implements the instance methoeds ``fit``, ``score``, and ``predict``.
-   Must be assigned a string.
+   Must be assigned a string as a value.
 
 ``params``
   Specifies any hyperparameters used for creating an ``sklearn``-like model
@@ -300,8 +300,7 @@ object, ``noisy_eval.py`` knows to interprets the JSON object as specification
 for an ``sklearn``-like class instance. In this case, an instance of the
 ``DecisionTreeClassifier`` from ``sklearn.tree`` with the specified values for
 ``criterion``, ``max_depth``, and ``random_state`` will be created and passed
-to ``base_estimator`` upon creation of an
-``sklearn.ensemble.AdaBoostClassifier`` instance.
+to ``base_estimator`` upon creation of an ``AdaBoostClassifier``.
 
 .. code:: json
 
